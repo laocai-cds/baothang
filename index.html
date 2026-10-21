@@ -42,7 +42,7 @@
   --serif:'Noto Serif',Georgia,'Times New Roman',serif;
   --sans:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
   --display:var(--sans);--body:var(--sans);
-  --side:268px;--wrap:1240px;--r:14px;--r-s:9px;
+  --side:330px;--wrap:1240px;--r:14px;--r-s:9px;
   --sh:0 1px 0 #fff inset,0 1px 2px #3b070c0d,0 8px 24px -16px #3b070c33;
   /* tên cũ giữ cho mã báo cáo */
   --lac:var(--son);--lac-d:var(--son-d);--lac-2:var(--son-l);--gold:var(--vang);--gold-d:#9c7b14;
@@ -71,8 +71,7 @@ a{color:var(--son)}
 .seal{flex:none;width:46px;height:46px;border-radius:12px;background:#fff;display:grid;place-items:center;overflow:hidden;box-shadow:0 0 0 1px #e9cf7a66,0 6px 14px -6px #000a}
 .seal img{display:block;width:100%;height:100%;object-fit:contain}
 .brand>div:last-child{min-width:0}
-.brand b{display:block;font:700 15px/1.3 var(--serif);color:#fff;letter-spacing:.01em}
-.brand b::after{content:'Thu nộp đảng phí';display:block;margin-top:3px;font:600 10.5px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--vang-l)}
+.brand b{display:block;font:700 16px/1.3 var(--serif);color:#fff;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
 .tabs{display:flex;flex-direction:column;gap:4px}
 .tabs::before{content:'Chuyên mục';font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#e9cf7a99;padding:6px 12px 6px}
 .tab{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;border-radius:10px;color:#f3e6d6cc;padding:11px 12px;cursor:pointer;font-weight:500;font-size:14px;position:relative;transition:background .15s,color .15s}
@@ -418,7 +417,7 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
   .bar .wrap{flex-direction:row;align-items:center;gap:10px;padding:10px 16px}
   .brand{flex:1;min-width:0;padding:0;margin:0;border:0;gap:10px}
   .seal{width:38px;height:38px;border-radius:10px}
-  .brand b{font-size:14px}.brand b::after{font-size:9.5px;letter-spacing:.12em;margin-top:2px}
+  .brand b{font-size:13.5px}
   .tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;flex-direction:row;gap:0;background:#fff;border-top:1px solid var(--rule);box-shadow:0 -8px 24px -16px #3b070c55;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
   .tabs::before{display:none}
   .tab{flex:1;flex-direction:column;gap:3px;justify-content:center;text-align:center;padding:7px 4px;color:var(--muted);font-size:11.5px;border-radius:10px}
