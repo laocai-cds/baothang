@@ -526,6 +526,13 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
 @media print{.bar,.notice,.livebar{display:none}.notice,main,.livebar,.foot{margin-left:0}}
 /* toàn bộ khung hình ở mức 90% trên máy tính */
 @media(min-width:1024px){html{zoom:.9}:root{--wrap:1360px}}
+/* ảnh phong cảnh dưới dải thông báo */
+.scenic{position:relative;margin:0 0 0 var(--side);height:clamp(150px,17vw,280px);overflow:hidden;background:var(--son-d)}
+.scenic img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 64%}
+.scenic::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(60,6,10,.35) 100%);box-shadow:inset 0 -3px 0 var(--vang)}
+.scenic figcaption{position:absolute;right:14px;bottom:10px;z-index:1;font:500 11px var(--sans);color:#fff;opacity:.9;text-shadow:0 1px 3px #000c}
+@media(max-width:760px){.scenic{height:120px}.scenic img{object-position:50% 62%}.scenic figcaption{font-size:10px;right:10px;bottom:7px}}
+@media print{.scenic{display:none}}
 /* Đang online + Tổng truy cập: góc phải dải thông báo */
 .notice .livepill{flex:none;display:flex;align-items:stretch;gap:0;padding:0;margin:0;border:0;border-left:1px solid var(--rule);border-radius:0;background:linear-gradient(180deg,#fff,#fbfbfc);color:var(--ink);white-space:nowrap}
 .notice .livepill .lp{display:flex;align-items:center;gap:8px;padding:0 16px}
@@ -563,6 +570,8 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
   <div class="livepill" id="livePill" hidden aria-label="Thống kê truy cập"><span class="lp" title="Số người đang mở trang"><span class="ldot"></span><small>Đang online</small><b data-live="online">0</b></span><span class="lp" title="Tổng số lượt truy cập"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12s3.6-6.5 9.5-6.5S21.5 12 21.5 12s-3.6 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg><small>Tổng truy cập</small><b data-live="total">0</b></span></div>
   <button class="nt-set" id="ntSet" type="button" title="Cài đặt thông báo" aria-label="Cài đặt thông báo"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 </section>
+
+<figure class="scenic"><img src="banner-bao-thang.jpg" alt="Phong cảnh Bảo Thắng nhìn từ trên cao" width="2576" height="934" decoding="async" fetchpriority="high"><figcaption>Ảnh: Hoàng Trọng Photography</figcaption></figure>
 
 <main>
 <section class="page on" id="overview" aria-label="Tổng quan">
