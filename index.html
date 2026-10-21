@@ -526,6 +526,36 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
 @media print{.bar,.notice,.livebar{display:none}.notice,main,.livebar,.foot{margin-left:0}}
 /* toàn bộ khung hình ở mức 90% trên máy tính */
 @media(min-width:1024px){html{zoom:.9}:root{--wrap:1360px}}
+/* tóm tắt tự động */
+.tomtat{margin-bottom:22px;border-left:4px solid var(--vang)}
+.tomtat .ph{align-items:center;margin-bottom:10px}
+.tt-copy{padding:7px 12px;font-size:12.5px}
+.tt-text{margin:0;font:400 15.5px/1.75 var(--serif);color:var(--ink)}
+.tt-text b{color:var(--son-d)}
+.tt-hint{margin:10px 0 0;font-size:12px;color:var(--muted)}
+/* thẻ chi bộ của tôi */
+.uname[data-cb]{cursor:pointer}
+.uname[data-cb]:hover{color:var(--son);text-decoration:underline;text-underline-offset:3px}
+.cbm{width:min(480px,100%);padding:0;overflow:hidden;border-top:0}
+.cbm-head{position:relative;padding:20px 22px 18px;color:#fff;background:linear-gradient(135deg,var(--son),var(--son-dd))}
+.cbm-head small{display:block;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--vang-l)}
+.cbm-head h3{margin:6px 0 0;font:700 1.25rem/1.3 var(--serif);color:#fff}
+.cbm-x{position:absolute;right:10px;top:10px;width:32px;height:32px;border:0;border-radius:50%;background:#ffffff26;color:#fff;font-size:18px;line-height:1;cursor:pointer}
+.cbm-body{padding:18px 22px 20px}
+.cbm-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.cbm-top strong{font:700 2.4rem/1 var(--serif);color:var(--ngoc)}
+.cbm-top .pill{font-size:12px}
+.cbm-rank{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.cbm-rank b{color:var(--ink)}
+.cbm .track{height:10px;margin:14px 0 16px}
+.cbm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cbm-grid div{padding:10px 12px;border-radius:10px;background:var(--giay);border:1px solid var(--rule-2)}
+.cbm-grid small{display:block;font-size:11px;color:var(--muted)}
+.cbm-grid b{font:700 1.05rem/1.3 var(--serif);color:var(--ink)}
+.cbm-grid .warn b{color:var(--do)}
+.cbm-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.cbm-acts .btn{flex:1;min-width:130px;padding:10px 12px}
+@media(max-width:760px){.tt-text{font-size:14.5px}.cbm-top strong{font-size:2rem}}
 /* tiến trình hồ sơ + tỷ lệ thu theo tiền */
 .kp2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:20px;margin-bottom:22px}
 .fn-row{display:grid;grid-template-columns:150px minmax(0,1fr) 104px;align-items:center;gap:14px;padding:6px 0}
@@ -621,6 +651,11 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
     </div>
   </div>
   <div class="strip"><div class="wrap" id="stats"></div></div>
+  <div class="wrap"><section class="panel pad tomtat" id="tom-tat" aria-label="Tóm tắt tình hình">
+    <div class="ph"><h2>Tóm tắt tình hình</h2><button class="btn tt-copy" id="ttCopy" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>Sao chép</button></div>
+    <p class="tt-text" id="ttText"></p>
+    <p class="tt-hint">Đoạn này tự viết từ số liệu đang hiển thị, dán thẳng vào báo cáo hoặc tin nhắn được. Bấm tên một đơn vị trong bảng để xem và gửi thẻ riêng của đơn vị đó.</p>
+  </section></div>
   <div class="wrap"><div class="kp2" id="chi-tieu">
     <div class="panel pad" id="tien-trinh-ho-so"><div class="ph"><h2>Tiến trình hồ sơ đảng phí</h2><small>Số đảng viên qua từng bước: kê khai → duyệt → nộp</small></div><div id="funnel"></div></div>
     <div class="panel pad" id="thu-theo-tien"><div class="ph"><h2>Tỷ lệ thu theo tiền</h2><small>Đã nộp so với số tiền kê khai</small></div><div id="moneyRate"></div></div>
@@ -1019,6 +1054,7 @@ function render(){
     ['Hồ sơ cần xử lý',`<strong data-c="${t.pending+t.noRecord+t.approved}" data-f="num">0</strong>`,`${num(t.pending)} chưa duyệt · ${num(t.noRecord)} chưa có hồ sơ`]
   ].map(([a,b,c],i)=>`<div class="stat k${i+1}"><i class="ico" aria-hidden="true">${['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2A4.6 4.6 0 0 1 21 18.5"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M7 15h3"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.6 2.6L16 9.6"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l1 2h3v14H5V6h3z"/><path d="M9 11h6M9 15h4"/></svg>'][i]}</i><span>${a}</span>${b}<small>${c}</small></div>`).join('');
 
+  renderSummary(t,rate);if(cbOpen)openCb(cbOpen,true);
   // tiến trình hồ sơ đảng phí (mỗi bước tính trên số đảng viên phải nộp)
   {const due=t.due,hasRec=t.pending+t.approved+t.paidCount,appr=t.approved+t.paidCount,paid=t.paidCount;
    const P=x=>due>0?Math.min(1,x/due):0;
@@ -1094,10 +1130,10 @@ function fillTables(){
   list=sorted(list);
   $('#rowcount').textContent=`Hiển thị ${list.length} / ${units.length} đơn vị`;
   $('#noresult').hidden=list.length>0;
-  $('#tbody').innerHTML=list.map(r=>{const[s,c]=status(r);return `<tr class="row ${cls(r)}"><td>${rk(r)}</td><td class="uname">${esc(nm(r))}</td><td class="n pc"><b>${v(r,'paidCount')}</b>/${v(r,'due')}</td>${zc(v(r,'pending'),'amb')}${zc(v(r,'noRecord'),'red')}<td class="n">${money(v(r,'declared'))}</td><td class="n mny"><b>${money(v(r,'paid'))}</b></td><td>${progCell(r)}</td><td><span class="pill ${c}">${s}</span></td></tr>`}).join('');
+  $('#tbody').innerHTML=list.map(r=>{const[s,c]=status(r);return `<tr class="row ${cls(r)}"><td>${rk(r)}</td><td class="uname" data-cb="${cbSlug(r)}" title="Xem thẻ đơn vị">${esc(nm(r))}</td><td class="n pc"><b>${v(r,'paidCount')}</b>/${v(r,'due')}</td>${zc(v(r,'pending'),'amb')}${zc(v(r,'noRecord'),'red')}<td class="n">${money(v(r,'declared'))}</td><td class="n mny"><b>${money(v(r,'paid'))}</b></td><td>${progCell(r)}</td><td><span class="pill ${c}">${s}</span></td></tr>`}).join('');
   const q2=($('#search2').value||'').toLocaleLowerCase('vi');
   const l2=sorted(units.filter(r=>nm(r).toLocaleLowerCase('vi').includes(q2)));
-  $('#tbody2').innerHTML=l2.map(r=>`<tr class="row ${cls(r)}"><td class="hint">${esc(r[KEYS.stt])}</td><td>${rk(r)}</td><td class="uname">${esc(nm(r))}</td><td class="n">${v(r,'members')}</td>${zc(v(r,'pending'),'amb')}<td class="n pc"><b>${v(r,'paidCount')}</b></td><td class="n mny"><b>${money(v(r,'paid'))}</b></td><td>${progCell(r)}</td></tr>`).join('');
+  $('#tbody2').innerHTML=l2.map(r=>`<tr class="row ${cls(r)}"><td class="hint">${esc(r[KEYS.stt])}</td><td>${rk(r)}</td><td class="uname" data-cb="${cbSlug(r)}" title="Xem thẻ đơn vị">${esc(nm(r))}</td><td class="n">${v(r,'members')}</td>${zc(v(r,'pending'),'amb')}<td class="n pc"><b>${v(r,'paidCount')}</b></td><td class="n mny"><b>${money(v(r,'paid'))}</b></td><td>${progCell(r)}</td></tr>`).join('');
   $$('th[data-sort]').forEach(th=>th.setAttribute('aria-sort',th.dataset.sort===state.sort.k?(state.sort.dir>0?'ascending':'descending'):'none'));
   growBars('#overview .tw');growBars('#units .tw');
 }
@@ -1113,6 +1149,57 @@ function page(id,silent){
 }
 $$('.tab').forEach(e=>e.onclick=()=>page(e.dataset.page));
 $$('[data-goto]').forEach(e=>e.onclick=()=>page(e.dataset.goto));
+/* ===== Tóm tắt tự động ===== */
+function monthLabel(){const k=viewKey||curKey();return 'Tháng '+(+k.slice(5))+'/'+k.slice(0,4)}
+function listNames(arr){const n=arr.map(r=>nm(r));return n.length<=1?n.join(''):n.slice(0,-1).join(', ')+' và '+n[n.length-1]}
+function summaryText(t,rate){
+  const active=units.filter(r=>v(r,'members')>0);
+  const done=active.filter(r=>cls(r)==='complete').length,part=active.filter(r=>cls(r)==='partial').length,empty=active.length-done-part;
+  const mr=t.declared>0?t.paid/t.declared:0,left=Math.max(0,t.declared-t.paid);
+  const hasRec=t.pending+t.approved+t.paidCount;
+  const steps=[{n:Math.max(0,t.due-hasRec),txt:'lập hồ sơ',desc:'chưa có hồ sơ',k:'noRecord'},{n:t.pending,txt:'duyệt hồ sơ',desc:'có hồ sơ nhưng chưa được duyệt',k:'pending'},{n:t.approved,txt:'nộp tiền',desc:'đã được duyệt nhưng chưa nộp',k:'approved'}];
+  const b=steps.reduce((a,x)=>x.n>a.n?x:a,steps[0]);
+  const top=active.filter(r=>v(r,b.k)>0).sort((a,c)=>v(c,b.k)-v(a,b.k)).slice(0,3);
+  const lead=units.find(r=>v(r,'paidCount')>0);
+  let s=`${monthLabel()}, toàn Đảng bộ có <b>${num(t.paidCount)}/${num(t.due)}</b> đảng viên đã nộp đảng phí (<b>${pct(rate)}</b>), thu được <b>${money(t.paid)}</b>, đạt <b>${pct(mr)}</b> số tiền kê khai; còn phải thu <b>${money(left)}</b>. `;
+  s+=`Có ${done} đơn vị đã hoàn thành, ${part} đơn vị đang thu và ${empty} đơn vị chưa phát sinh. `;
+  if(b.n>0)s+=`Khâu chậm nhất là ${b.txt}: <b>${num(b.n)}</b> đảng viên ${b.desc}${top.length?', nhiều nhất ở '+esc(listNames(top)):''}. `;
+  if(lead)s+=`Dẫn đầu là ${esc(nm(lead))} (${pct(v(lead,'progress'))}).`;
+  return s.trim();
+}
+function renderSummary(t,rate){const el=$('#ttText');if(el)el.innerHTML=summaryText(t,rate)}
+function copyText(txt){const ok=()=>toast('Đã sao chép.');
+  if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(txt).then(ok).catch(()=>fallback());fallback();
+  function fallback(){const a=document.createElement('textarea');a.value=txt;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(_){toast('Không sao chép được, hãy chọn và sao chép thủ công.')}a.remove()}}
+$('#ttCopy').onclick=()=>copyText($('#ttText').innerText);
+
+/* ===== Thẻ "Chi bộ của tôi": link riêng #cb=ten-don-vi ===== */
+const cbSlug=r=>nm(r).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/gi,'d').toLowerCase().replace(/^(chi bo|dang bo)\s+/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+let cbOpen=null;
+function cbUrl(slug){return location.origin+location.pathname+'#cb='+slug}
+function openCb(slug,refresh){
+  const r=units.find(x=>cbSlug(x)===slug);if(!r){if(!refresh)toast('Không tìm thấy đơn vị trong link.');return}
+  cbOpen=slug;let bk=$('#cbModal');
+  if(!bk){bk=document.createElement('div');bk.className='back';bk.id='cbModal';bk.setAttribute('role','dialog');bk.setAttribute('aria-modal','true');document.body.appendChild(bk);
+    bk.addEventListener('click',e=>{if(e.target===bk||e.target.closest('[data-cbclose]'))closeCb()})}
+  const [st,sc]=status(r),p=Math.max(0,Math.min(1,v(r,'progress'))),left=Math.max(0,v(r,'declared')-v(r,'paid')),rk=rankOf.get(r)||'–';
+  bk.innerHTML=`<div class="modal cbm"><div class="cbm-head"><small>Đảng bộ xã Bảo Thắng · ${monthLabel()}</small><h3>${esc(nm(r))}</h3><button class="cbm-x" type="button" data-cbclose aria-label="Đóng">×</button></div>
+  <div class="cbm-body"><div class="cbm-top"><strong>${pct(p)}</strong><span class="pill ${sc}">${st}</span></div>
+  <p class="cbm-rank">Xếp hạng <b>${rk}/${units.length}</b> đơn vị · <b>${num(v(r,'paidCount'))}/${num(v(r,'due'))}</b> đảng viên đã nộp</p>
+  <div class="track"><i class="${cls(r)}" style="width:${(p*100).toFixed(1)}%"></i></div>
+  <div class="cbm-grid"><div class="${v(r,'noRecord')?'warn':''}"><small>Chưa có hồ sơ</small><b>${num(v(r,'noRecord'))}</b></div><div class="${v(r,'pending')?'warn':''}"><small>Chưa được duyệt</small><b>${num(v(r,'pending'))}</b></div><div class="${v(r,'approved')?'warn':''}"><small>Đã duyệt, chưa nộp</small><b>${num(v(r,'approved'))}</b></div><div><small>Đã nộp</small><b>${money(v(r,'paid'))}</b></div><div><small>Kê khai</small><b>${money(v(r,'declared'))}</b></div><div class="${left?'warn':''}"><small>Còn phải thu</small><b>${money(left)}</b></div></div>
+  <div class="cbm-acts"><button class="btn solid" type="button" id="cbShare">Gửi link đơn vị</button><button class="btn" type="button" data-cbclose>Xem toàn Đảng bộ</button></div></div></div>`;
+  $('#cbShare').onclick=()=>{const url=cbUrl(slug),title=nm(r)+' · thu nộp đảng phí';
+    if(navigator.share)navigator.share({title,text:title+': '+pct(p)+' đảng viên đã nộp',url}).catch(()=>{});else copyText(url)};
+  bk.classList.add('on');
+  if(location.hash!=='#cb='+slug)history.replaceState(null,'','#cb='+slug);
+}
+function closeCb(){cbOpen=null;const bk=$('#cbModal');if(bk)bk.classList.remove('on');history.replaceState(null,'',location.pathname+'#overview')}
+document.addEventListener('click',e=>{const c=e.target.closest('.uname[data-cb]');if(c)openCb(c.dataset.cb)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cbOpen)closeCb()});
+function cbFromHash(){const m=location.hash.match(/^#cb=([a-z0-9-]+)/);if(m)openCb(m[1])}
+window.addEventListener('hashchange',cbFromHash);
+setTimeout(cbFromHash,0);
 $('#search').oninput=fillTables;$('#search2').oninput=fillTables;
 $$('.chip').forEach(c=>c.onclick=()=>{state.filter=c.dataset.filter;$$('.chip').forEach(x=>x.setAttribute('aria-pressed',x===c));fillTables()});
 $$('th[data-sort]').forEach(th=>th.onclick=()=>{const k=th.dataset.sort;state.sort=state.sort.k===k?{k,dir:-state.sort.dir}:{k,dir:(k==='name'||k==='rank'||k==='stt')?1:-1};fillTables()});
