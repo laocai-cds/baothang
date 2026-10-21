@@ -530,6 +530,10 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
 .tomtat{margin-bottom:22px;border-left:4px solid var(--vang)}
 .tomtat .ph{align-items:center;margin-bottom:10px}
 .tt-copy{padding:7px 12px;font-size:12.5px}
+.tt-acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.cbm-msgh{margin:16px 0 6px;font:600 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cbm-msg{font-size:13px;line-height:1.5;resize:vertical;min-height:96px}
+.rmd{width:min(560px,100%)}.rmd textarea{min-height:220px;font-size:13px;line-height:1.5;resize:vertical}
 .tt-text{margin:0;font:400 15.5px/1.75 var(--serif);color:var(--ink)}
 .tt-text b{color:var(--son-d)}
 .tt-hint{margin:10px 0 0;font-size:12px;color:var(--muted)}
@@ -652,9 +656,9 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
   </div>
   <div class="strip"><div class="wrap" id="stats"></div></div>
   <div class="wrap"><section class="panel pad tomtat" id="tom-tat" aria-label="Tóm tắt tình hình">
-    <div class="ph"><h2>Tóm tắt tình hình</h2><button class="btn tt-copy" id="ttCopy" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>Sao chép</button></div>
+    <div class="ph"><h2>Tóm tắt tình hình</h2><div class="tt-acts"><button class="btn solid tt-copy" id="ttRemind" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.4A8.5 8.5 0 1 1 21 12z"/></svg>Đôn đốc đơn vị chưa đạt</button><button class="btn tt-copy" id="ttCopy" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>Sao chép</button></div></div>
     <p class="tt-text" id="ttText"></p>
-    <p class="tt-hint">Đoạn này tự viết từ số liệu đang hiển thị, dán thẳng vào báo cáo hoặc tin nhắn được. Bấm tên một đơn vị trong bảng để xem và gửi thẻ riêng của đơn vị đó.</p>
+    <p class="tt-hint">Đoạn này tự viết từ số liệu đang hiển thị, dán thẳng vào báo cáo hoặc tin nhắn được. Bấm tên một đơn vị trong bảng để xem thẻ và nhắn tin đôn đốc riêng đơn vị đó.</p>
   </section></div>
   <div class="wrap"><div class="kp2" id="chi-tieu">
     <div class="panel pad" id="tien-trinh-ho-so"><div class="ph"><h2>Tiến trình hồ sơ đảng phí</h2><small>Số đảng viên qua từng bước: kê khai → duyệt → nộp</small></div><div id="funnel"></div></div>
@@ -1173,6 +1177,34 @@ function copyText(txt){const ok=()=>toast('Đã sao chép.');
   function fallback(){const a=document.createElement('textarea');a.value=txt;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(_){toast('Không sao chép được, hãy chọn và sao chép thủ công.')}a.remove()}}
 $('#ttCopy').onclick=()=>copyText($('#ttText').innerText);
 
+/* ===== Tin nhắn đôn đốc ===== */
+const IS_PHONE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+function unitMsg(r){
+  const p=Math.max(0,Math.min(1,v(r,'progress'))),url=cbUrl(cbSlug(r)),left=Math.max(0,v(r,'declared')-v(r,'paid'));
+  if(cls(r)==='complete')return `[Đảng ủy xã Bảo Thắng] ${nm(r)} đã hoàn thành thu nộp đảng phí ${monthLabel().toLowerCase()}: ${num(v(r,'paidCount'))}/${num(v(r,'due'))} đảng viên đã nộp (100%). Cảm ơn chi bộ! Chi tiết: ${url}`;
+  const parts=[];if(v(r,'noRecord'))parts.push(`${num(v(r,'noRecord'))} đảng viên chưa có hồ sơ`);if(v(r,'pending'))parts.push(`${num(v(r,'pending'))} hồ sơ chưa được duyệt`);if(v(r,'approved'))parts.push(`${num(v(r,'approved'))} đảng viên đã duyệt nhưng chưa nộp`);if(left)parts.push(`còn phải thu ${money(left)}`);
+  return `[Đảng ủy xã Bảo Thắng] Đề nghị ${nm(r)} đôn đốc hoàn thành thu nộp đảng phí ${monthLabel().toLowerCase()}. Hiện đã nộp ${num(v(r,'paidCount'))}/${num(v(r,'due'))} đảng viên (${pct(p)})${parts.length?'; '+parts.join(', '):''}. Chi tiết: ${url}`;
+}
+function allMsg(){
+  const t=totals(),rate=t.due?t.paidCount/t.due:0;
+  const list=units.filter(r=>v(r,'members')>0&&cls(r)!=='complete').sort((a,b)=>v(a,'progress')-v(b,'progress'));
+  const lines=list.map((r,i)=>`${i+1}. ${nm(r)}: ${num(v(r,'paidCount'))}/${num(v(r,'due'))} (${pct(v(r,'progress'))})`);
+  return `[Đảng ủy xã Bảo Thắng] Tiến độ thu nộp đảng phí ${monthLabel().toLowerCase()}: toàn Đảng bộ đã nộp ${num(t.paidCount)}/${num(t.due)} đảng viên (${pct(rate)}). Đề nghị ${list.length} đơn vị sau khẩn trương hoàn thiện hồ sơ và thu nộp:\n${lines.join('\n')}\nXem chi tiết từng đơn vị: ${location.origin+location.pathname}`;
+}
+function sendSms(text){location.href='sms:?&body='+encodeURIComponent(text)}
+function shareText(text,title){if(navigator.share)navigator.share({title,text}).catch(()=>{});else copyText(text)}
+function openRemindAll(){
+  let bk=$('#rmdModal');
+  if(!bk){bk=document.createElement('div');bk.className='back';bk.id='rmdModal';bk.setAttribute('role','dialog');bk.setAttribute('aria-modal','true');document.body.appendChild(bk);
+    bk.addEventListener('click',e=>{if(e.target===bk||e.target.closest('[data-rmdclose]'))bk.classList.remove('on')})}
+  bk.innerHTML=`<div class="modal rmd"><h3>Đôn đốc đơn vị chưa đạt</h3><p>Tin soạn sẵn cho nhóm Zalo của Đảng bộ, sửa được trước khi gửi.</p><textarea class="input" id="rmdMsg">${esc(allMsg())}</textarea>
+  <div class="macts">${IS_PHONE?'<button class="btn" type="button" id="rmdSms">Nhắn SMS</button>':''}<button class="btn solid" type="button" id="rmdShare">${navigator.share?'Gửi Zalo / khác':'Sao chép tin nhắn'}</button><button class="btn" type="button" data-rmdclose>Đóng</button></div></div>`;
+  if($('#rmdSms'))$('#rmdSms').onclick=()=>sendSms($('#rmdMsg').value);
+  $('#rmdShare').onclick=()=>shareText($('#rmdMsg').value,'Đôn đốc thu nộp đảng phí');
+  bk.classList.add('on');
+}
+$('#ttRemind').onclick=openRemindAll;
+
 /* ===== Thẻ "Chi bộ của tôi": link riêng #cb=ten-don-vi ===== */
 const cbSlug=r=>nm(r).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/gi,'d').toLowerCase().replace(/^(chi bo|dang bo)\s+/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 let cbOpen=null;
@@ -1188,9 +1220,11 @@ function openCb(slug,refresh){
   <p class="cbm-rank">Xếp hạng <b>${rk}/${units.length}</b> đơn vị · <b>${num(v(r,'paidCount'))}/${num(v(r,'due'))}</b> đảng viên đã nộp</p>
   <div class="track"><i class="${cls(r)}" style="width:${(p*100).toFixed(1)}%"></i></div>
   <div class="cbm-grid"><div class="${v(r,'noRecord')?'warn':''}"><small>Chưa có hồ sơ</small><b>${num(v(r,'noRecord'))}</b></div><div class="${v(r,'pending')?'warn':''}"><small>Chưa được duyệt</small><b>${num(v(r,'pending'))}</b></div><div class="${v(r,'approved')?'warn':''}"><small>Đã duyệt, chưa nộp</small><b>${num(v(r,'approved'))}</b></div><div><small>Đã nộp</small><b>${money(v(r,'paid'))}</b></div><div><small>Kê khai</small><b>${money(v(r,'declared'))}</b></div><div class="${left?'warn':''}"><small>Còn phải thu</small><b>${money(left)}</b></div></div>
-  <div class="cbm-acts"><button class="btn solid" type="button" id="cbShare">Gửi link đơn vị</button><button class="btn" type="button" data-cbclose>Xem toàn Đảng bộ</button></div></div></div>`;
-  $('#cbShare').onclick=()=>{const url=cbUrl(slug),title=nm(r)+' · thu nộp đảng phí';
-    if(navigator.share)navigator.share({title,text:title+': '+pct(p)+' đảng viên đã nộp',url}).catch(()=>{});else copyText(url)};
+  <p class="cbm-msgh">Tin nhắn đôn đốc (soạn sẵn, sửa được trước khi gửi)</p><textarea class="input cbm-msg" id="cbMsg" rows="5">${esc(unitMsg(r))}</textarea>
+  <div class="cbm-acts">${IS_PHONE?'<button class="btn solid" type="button" id="cbSms">Nhắn SMS</button>':''}<button class="btn ${IS_PHONE?'':'solid'}" type="button" id="cbZalo">${navigator.share?'Gửi Zalo / khác':'Sao chép tin nhắn'}</button><button class="btn" type="button" data-cbclose>Xem toàn Đảng bộ</button></div></div></div>`;
+  const msg=()=>$('#cbMsg').value;
+  if($('#cbSms'))$('#cbSms').onclick=()=>sendSms(msg());
+  $('#cbZalo').onclick=()=>shareText(msg(),nm(r)+' · thu nộp đảng phí');
   bk.classList.add('on');
   if(location.hash!=='#cb='+slug)history.replaceState(null,'','#cb='+slug);
 }
