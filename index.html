@@ -30,15 +30,15 @@
    chỉ vàng, chữ có chân cho tiêu đề.
    ========================================================= */
 :root{
-  --son:#8e1b22;--son-d:#5a0d13;--son-dd:#3b070c;--son-l:#b8323a;
+  --son:#b3141c;--son-d:#8c0f16;--son-dd:#650a10;--son-l:#d4262e;
   --vang:#c9a227;--vang-l:#e9cf7a;--vang-bg:#fbf4dc;
   --ngoc:#1e7a4c;--ngoc-bg:#e3f1e8;
   --ho:#b7791f;--ho-bg:#fcefd6;
   --do:#b3261e;--do-bg:#f9e1df;
-  --xam:#8b8578;--xam-bg:#efece4;
-  --giay:#f6f3ec;--giay-2:#efeadf;--paper:#fff;
-  --ink:#1c1d1f;--ink-2:#3d3a35;--muted:#76705f;
-  --rule:#e4ddcd;--rule-2:#efe9dc;
+  --xam:#8a8b8f;--xam-bg:#eff0f2;
+  --giay:#f7f7f8;--giay-2:#eff0f2;--paper:#fff;
+  --ink:#1c1d1f;--ink-2:#374151;--muted:#6b7280;
+  --rule:#e5e7eb;--rule-2:#f0f1f3;
   --serif:'Noto Serif',Georgia,'Times New Roman',serif;
   --sans:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
   --display:var(--sans);--body:var(--sans);
@@ -71,7 +71,7 @@ a{color:var(--son)}
 .seal{flex:none;width:46px;height:46px;border-radius:12px;background:#fff;display:grid;place-items:center;overflow:hidden;box-shadow:0 0 0 1px #e9cf7a66,0 6px 14px -6px #000a}
 .seal img{display:block;width:100%;height:100%;object-fit:contain}
 .brand>div:last-child{min-width:0}
-.brand b{display:block;font:700 16px/1.3 var(--serif);color:#fff;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.brand b{display:block;font:700 16px/1.3 var(--serif);color:#f5d76e;background:linear-gradient(180deg,#fff6cf 0%,#f9dc7a 42%,#e6b53e 72%,#fbe49a 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;filter:drop-shadow(0 1px 1px #0000004d)}
 .tabs{display:flex;flex-direction:column;gap:4px}
 .tabs::before{content:'Chuyên mục';font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#e9cf7a99;padding:6px 12px 6px}
 .tab{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;border-radius:10px;color:#f3e6d6cc;padding:11px 12px;cursor:pointer;font-weight:500;font-size:14px;position:relative;transition:background .15s,color .15s}
@@ -95,7 +95,7 @@ a{color:var(--son)}
 
 /* ---------- nút ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--rule);background:var(--paper);border-radius:var(--r-s);padding:8px 14px;font-weight:600;font-size:13px;cursor:pointer;color:var(--ink-2);text-decoration:none;transition:background .15s,border-color .15s,box-shadow .15s}
-.btn:hover{border-color:#cfc4ab;box-shadow:0 2px 8px -4px #3b070c33}
+.btn:hover{border-color:#cbd0d6;box-shadow:0 2px 8px -4px #3b070c33}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.solid{background:var(--son);border-color:var(--son);color:#fff}
 .btn.solid:hover{background:var(--son-l)}
@@ -211,7 +211,7 @@ a{color:var(--son)}
 .cb em{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);padding-bottom:6px;font:600 10.5px/1 var(--sans);font-style:normal;color:var(--muted);white-space:nowrap}
 .cb.complete{background:linear-gradient(180deg,#2f9a63,var(--ngoc))}
 .cb.partial{background:linear-gradient(180deg,#dcb84a,#a8841a)}
-.cb.empty{background:#cfc8b8;min-height:3px}
+.cb.empty{background:#d1d5db;min-height:3px}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--muted);margin-bottom:22px}
 .legend span:before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:7px}
 .legend b{color:var(--ink)}
@@ -269,10 +269,10 @@ a{color:var(--son)}
 .thead{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 24px;border-bottom:1px solid var(--rule)}
 .thead .ph{margin:0}
 .ctrls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.search{border:1px solid var(--rule);border-radius:99px;padding:8px 14px 8px 36px;width:250px;background:var(--giay) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2376705f' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") 13px 50%/15px no-repeat}
-.search:focus{background-color:#fff;border-color:#cfc4ab;outline:0;box-shadow:0 0 0 3px #c9a22726}
+.search{border:1px solid var(--rule);border-radius:99px;padding:8px 14px 8px 36px;width:250px;background:var(--giay) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") 13px 50%/15px no-repeat}
+.search:focus{background-color:#fff;border-color:#cbd0d6;outline:0;box-shadow:0 0 0 3px #c9a22726}
 .chip{border:1px solid var(--rule);background:var(--paper);border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--ink-2)}
-.chip:hover{border-color:#cfc4ab}
+.chip:hover{border-color:#cbd0d6}
 .chip[aria-pressed=true]{background:var(--son-d);border-color:var(--son-d);color:#fff}
 .tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
@@ -284,12 +284,12 @@ th[aria-sort=ascending]::after{content:' ▲';font-size:8px}
 th[aria-sort=descending]::after{content:' ▼';font-size:8px}
 td{padding:11px 12px;border-bottom:1px solid var(--rule-2);font-size:13.5px;vertical-align:middle}
 tbody tr:last-child td{border-bottom:0}
-tbody tr.row:hover{background:#fbf8f1}
+tbody tr.row:hover{background:#f8f9fa}
 td.n,th.n{text-align:right;white-space:nowrap}
 .uname{font-weight:600;color:var(--ink)}
 td.pc b{color:var(--ngoc)}tbody tr.row.empty td.pc b{color:var(--do)}
 td.mny b{color:var(--ink);font-weight:700}
-td.amb{color:var(--ho);font-weight:700}td.red{color:var(--do);font-weight:700}td.zero{color:#bdb6a6}
+td.amb{color:var(--ho);font-weight:700}td.red{color:var(--do);font-weight:700}td.zero{color:#c4c8ce}
 .rk{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:50%;font:700 12px var(--sans);color:var(--ink-2);background:var(--xam-bg)}
 .rk.complete{background:var(--ngoc-bg);color:var(--ngoc)}
 .rk.partial{background:var(--ho-bg);color:#8a5a12}
@@ -304,7 +304,7 @@ td.amb{color:var(--ho);font-weight:700}td.red{color:var(--do);font-weight:700}td
 .track i{display:block;height:100%;width:0;border-radius:8px;transition:width 1s cubic-bezier(.22,.7,.2,1)}
 .track i.complete{background:var(--ngoc)}
 .track i.partial{background:linear-gradient(90deg,#a8841a,#d7b95a)}
-.track i.empty{background:#cfc8b8}
+.track i.empty{background:#d1d5db}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
 .pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
 .pill.done{background:var(--ngoc-bg);color:var(--ngoc)}
@@ -323,7 +323,7 @@ td.amb{color:var(--ho);font-weight:700}td.red{color:var(--do);font-weight:700}td
 .sn{display:inline-grid;place-items:center;width:28px;height:28px;margin-right:2px;border-radius:50%;background:var(--son-d);color:var(--vang-l);font:700 13px var(--serif);flex:none}
 .chipst{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--xam-bg);color:#5f5a4f;white-space:nowrap}
 .chipst.ok{background:var(--ngoc-bg);color:var(--ngoc)}.chipst.bad{background:var(--do-bg);color:var(--do)}.chipst.wait{background:var(--ho-bg);color:#8a5a12}
-.drop{border:2px dashed #d9cfb8;border-radius:12px;padding:38px 20px;text-align:center;background:var(--giay);transition:background .15s,border-color .15s}
+.drop{border:2px dashed #d1d5db;border-radius:12px;padding:38px 20px;text-align:center;background:var(--giay);transition:background .15s,border-color .15s}
 .drop.over{background:var(--vang-bg);border-color:var(--vang)}
 .drop h3{font:700 1.1rem var(--serif);margin:0 0 4px;color:var(--son-d)}
 .drop p{margin:0 0 16px;color:var(--muted);font-size:13.5px}
@@ -332,10 +332,10 @@ td.amb{color:var(--ho);font-weight:700}td.red{color:var(--do);font-weight:700}td
 .preview th{position:sticky;top:0;z-index:1;letter-spacing:0;text-transform:none;font-size:12px;color:var(--ink)}
 .preview th,.preview td{padding:7px 10px;white-space:nowrap}
 .preview td{max-width:260px;overflow:hidden;text-overflow:ellipsis}
-.preview tbody tr:nth-child(even){background:#fbf8f1}
+.preview tbody tr:nth-child(even){background:#f8f9fa}
 label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var(--ink-2)}
 .input{width:100%;border:1px solid var(--rule);border-radius:var(--r-s);padding:10px 12px;background:#fff}
-.input:focus{outline:0;border-color:#cfc4ab;box-shadow:0 0 0 3px #c9a22726}
+.input:focus{outline:0;border-color:#cbd0d6;box-shadow:0 0 0 3px #c9a22726}
 .fieldmsg{font-size:12.5px;margin-top:6px;color:var(--muted);overflow-wrap:anywhere}
 .fieldmsg.bad{color:var(--do);font-weight:600}.fieldmsg.ok{color:var(--ngoc);font-weight:600}
 .tokrow{display:flex;gap:8px}.tokrow .input{flex:1;min-width:0}
@@ -485,7 +485,7 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
   .tw thead{display:none}
   .tw tbody{display:block}
   .tw tbody tr.row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 6px;align-items:center;padding:12px 14px 12px 16px;border-bottom:1px solid var(--rule-2);position:relative}
-  .tw tbody tr.row::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:#cfc8b8}
+  .tw tbody tr.row::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:#d1d5db}
   .tw tbody tr.row.complete::before{background:var(--ngoc)}
   .tw tbody tr.row.partial::before{background:var(--vang)}
   .tw tbody tr.row.empty::before{background:var(--do)}
@@ -937,15 +937,15 @@ function renderDonut(t,rate,active){
     {l:'Đã duyệt, chưa nộp',v:t.approved,c:'#c9a227'},
     {l:'Chưa duyệt hồ sơ',v:t.pending,c:'#d98a3a'},
     {l:'Chưa có hồ sơ',v:t.noRecord,c:'#b3261e'},
-    {l:'Miễn giảm',v:t.exempt,c:'#9b9483'}
+    {l:'Miễn giảm',v:t.exempt,c:'#9ca3af'}
   ];
   const svg=$('#donutsvg');
   svg.setAttribute('aria-label',`Biểu đồ tròn: ${t.paidCount} trên ${t.due} đảng viên đã nộp, đạt ${pct(rate)}; ${sc.done} đơn vị hoàn thành, ${sc.part} đang thu, ${sc.empty} chưa phát sinh`);
-  svg.innerHTML=`<circle cx="110" cy="110" r="94" fill="none" stroke="#efe9dc" stroke-width="18"/><circle cx="110" cy="110" r="70" fill="none" stroke="#f4efe4" stroke-width="10"/>`+
-   `<circle cx="110" cy="110" r="106" fill="none" stroke="#c9a227" stroke-opacity=".45" stroke-width=".8" stroke-dasharray="1.5 4"/><circle cx="110" cy="110" r="58" fill="#fbf8f1"/>`+
-   `<g class="spin">${ring(94,18,mem)}</g><g class="spin">${ring(70,10,[{v:sc.done,c:'#1e7a4c'},{v:sc.part,c:'#c9a227'},{v:sc.empty,c:'#d6cfbf'}])}</g>`;
-  const rows=mem.filter(m=>m.v>0).map(m=>`<div style="--c:${m.c}"><span>${m.l}</span><b>${num(m.v)}</b></div>`).join('')||'<div style="--c:#d6cfbf"><span>Chưa có số liệu</span><b>0</b></div>';
-  $('#dlegend').innerHTML=`<div class="dgroup"><p>Đảng viên, vòng ngoài</p>${rows}</div><div class="dgroup"><p>Đơn vị, vòng trong</p><div style="--c:#1e7a4c"><span>Hoàn thành</span><b>${sc.done}</b></div><div style="--c:#c9a227"><span>Đang thu</span><b>${sc.part}</b></div><div style="--c:#d6cfbf"><span>Chưa phát sinh</span><b>${sc.empty}</b></div></div>`;
+  svg.innerHTML=`<circle cx="110" cy="110" r="94" fill="none" stroke="#eceef1" stroke-width="18"/><circle cx="110" cy="110" r="70" fill="none" stroke="#f3f4f6" stroke-width="10"/>`+
+   `<circle cx="110" cy="110" r="106" fill="none" stroke="#c9a227" stroke-opacity=".45" stroke-width=".8" stroke-dasharray="1.5 4"/><circle cx="110" cy="110" r="58" fill="#f8f9fa"/>`+
+   `<g class="spin">${ring(94,18,mem)}</g><g class="spin">${ring(70,10,[{v:sc.done,c:'#1e7a4c'},{v:sc.part,c:'#c9a227'},{v:sc.empty,c:'#d9dce1'}])}</g>`;
+  const rows=mem.filter(m=>m.v>0).map(m=>`<div style="--c:${m.c}"><span>${m.l}</span><b>${num(m.v)}</b></div>`).join('')||'<div style="--c:#d9dce1"><span>Chưa có số liệu</span><b>0</b></div>';
+  $('#dlegend').innerHTML=`<div class="dgroup"><p>Đảng viên, vòng ngoài</p>${rows}</div><div class="dgroup"><p>Đơn vị, vòng trong</p><div style="--c:#1e7a4c"><span>Hoàn thành</span><b>${sc.done}</b></div><div style="--c:#c9a227"><span>Đang thu</span><b>${sc.part}</b></div><div style="--c:#d9dce1"><span>Chưa phát sinh</span><b>${sc.empty}</b></div></div>`;
 }
 function growDonut(){
   $$('#donutsvg .seg').forEach(c=>{const L=Number(c.dataset.len),go=()=>{c.style.strokeDasharray=`${L} ${100-L}`};resetTo(c,'strokeDasharray','0 100');if(REDUCED)go();else requestAnimationFrame(()=>requestAnimationFrame(go))});
@@ -982,10 +982,10 @@ function render(){
   $('#colchart').setAttribute('aria-label',`Biểu đồ cột tiến độ thu đảng phí của ${n} đơn vị, ${done} đơn vị nộp đủ`);
   $('#colchart').innerHTML=units.map((r,i)=>{const p=Math.max(0,Math.min(1,v(r,'progress')));return `<div class="col" title="${esc(nm(r))}: ${pct(v(r,'progress'))} · ${v(r,'paidCount')}/${v(r,'due')} đảng viên đã nộp · ${money(v(r,'paid'))}"><div class="cb ${cls(r)}" data-h="${p*100}" style="--i:${i}"><i class="t3"></i><i class="s3"></i><em>${Math.round(p*100)}%</em></div></div>`}).join('');
   $('#colnames').innerHTML='';
-  $('#chartlegend').innerHTML=[['Đã hoàn thành','#1e7a4c'],['Đang thu','#b8921f'],['Chưa phát sinh','#cfc8b8']].map(([l,c])=>`<span style="--c:${c}">${l}</span>`).join('');
+  $('#chartlegend').innerHTML=[['Đã hoàn thành','#1e7a4c'],['Đang thu','#b8921f'],['Chưa phát sinh','#d1d5db']].map(([l,c])=>`<span style="--c:${c}">${l}</span>`).join('');
 
   // split by status
-  const groups=[['Đã hoàn thành','#1e7a4c'],['Đang thu','#b8921f'],['Chưa phát sinh','#9b9483']].map(([l,c])=>({l,c,n:0}));
+  const groups=[['Đã hoàn thành','#1e7a4c'],['Đang thu','#b8921f'],['Chưa phát sinh','#9ca3af']].map(([l,c])=>({l,c,n:0}));
   active.forEach(r=>{const s=status(r)[0];const g=groups.find(x=>x.l===s);if(g)g.n++});
   $('#split').setAttribute('aria-label',groups.map(g=>`${g.n} ${g.l.toLowerCase()}`).join(', '));
   $('#split').innerHTML=groups.filter(g=>g.n).map(g=>`<i style="flex:${g.n};background:${g.c}" title="${g.l}: ${g.n}"></i>`).join('');
