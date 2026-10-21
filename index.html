@@ -526,6 +526,34 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
 @media print{.bar,.notice,.livebar{display:none}.notice,main,.livebar,.foot{margin-left:0}}
 /* toàn bộ khung hình ở mức 90% trên máy tính */
 @media(min-width:1024px){html{zoom:.9}:root{--wrap:1360px}}
+/* tiến trình hồ sơ + tỷ lệ thu theo tiền */
+.kp2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:20px;margin-bottom:22px}
+.fn-row{display:grid;grid-template-columns:150px minmax(0,1fr) 104px;align-items:center;gap:14px;padding:6px 0}
+.fn-lab{font-size:13px;font-weight:600;color:var(--ink-2)}
+.fn-bar{height:28px;background:var(--rule-2);border-radius:7px;overflow:hidden}
+.fn-bar i{display:block;height:100%;width:0;border-radius:7px;background:linear-gradient(90deg,var(--son-d),var(--son-l));transition:width 1s cubic-bezier(.22,.7,.2,1)}
+.fn-row.s2 .fn-bar i{background:linear-gradient(90deg,#b8641a,#e39a3c)}
+.fn-row.s3 .fn-bar i{background:linear-gradient(90deg,#a8841a,#dcb84a)}
+.fn-row.s4 .fn-bar i{background:linear-gradient(90deg,#16683f,#2f9a63)}
+.fn-val{text-align:right;white-space:nowrap}
+.fn-val b{font:700 16px var(--serif);color:var(--ink)}
+.fn-val small{display:block;font-size:11px;color:var(--muted)}
+.fn-loss{margin:0 0 2px 164px;font-size:11.5px;color:var(--muted)}
+.fn-loss b{color:var(--ink-2)}
+.fn-loss.big{color:var(--do)}.fn-loss.big b{color:var(--do)}
+.fn-note{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--rule-2);font-size:12px;color:var(--muted)}
+.mr-big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.mr-big strong{font:700 2.6rem/1 var(--serif);color:var(--ngoc)}
+.mr-big span{font-size:12.5px;color:var(--muted)}
+.mr-track{height:12px;border-radius:12px;background:var(--rule-2);overflow:hidden;margin:16px 0 18px}
+.mr-track i{display:block;height:100%;width:0;border-radius:12px;background:linear-gradient(90deg,#16683f,#2f9a63);transition:width 1s cubic-bezier(.22,.7,.2,1)}
+.mr-list{display:grid;gap:0}
+.mr-list div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px dashed var(--rule-2);font-size:13px}
+.mr-list div b{font-weight:700;white-space:nowrap}
+.mr-list .due b{color:var(--do)}
+.mr-cmp{margin:12px 0 0;padding:10px 12px;border-radius:10px;background:var(--giay);font-size:12.5px;color:var(--ink-2)}
+@media(max-width:1100px){.kp2{grid-template-columns:1fr}}
+@media(max-width:760px){.kp2{gap:12px;margin-bottom:14px}.fn-row{grid-template-columns:96px minmax(0,1fr) 78px;gap:8px}.fn-lab{font-size:12px}.fn-bar{height:22px}.fn-val b{font-size:14px}.fn-loss{margin-left:0}.mr-big strong{font-size:2.1rem}}
 /* ảnh phong cảnh dưới dải thông báo */
 .scenic{position:relative;margin:0 0 0 var(--side);height:clamp(150px,17vw,280px);overflow:hidden;background:var(--son-d)}
 .scenic img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 64%}
@@ -593,6 +621,10 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
     </div>
   </div>
   <div class="strip"><div class="wrap" id="stats"></div></div>
+  <div class="wrap"><div class="kp2" id="chi-tieu">
+    <div class="panel pad" id="tien-trinh-ho-so"><div class="ph"><h2>Tiến trình hồ sơ đảng phí</h2><small>Số đảng viên qua từng bước: kê khai → duyệt → nộp</small></div><div id="funnel"></div></div>
+    <div class="panel pad" id="thu-theo-tien"><div class="ph"><h2>Tỷ lệ thu theo tiền</h2><small>Đã nộp so với số tiền kê khai</small></div><div id="moneyRate"></div></div>
+  </div></div>
 
   <div class="wrap">
     <div class="panel pad" style="margin-bottom:20px">
@@ -986,6 +1018,20 @@ function render(){
     ['Đã thu trong kỳ',`<strong data-c="${t.paid}" data-f="money">0</strong>`,`<b>${pct(rate)}</b> đảng viên đã nộp (${t.paidCount}/${t.due})`],
     ['Hồ sơ cần xử lý',`<strong data-c="${t.pending+t.noRecord+t.approved}" data-f="num">0</strong>`,`${num(t.pending)} chưa duyệt · ${num(t.noRecord)} chưa có hồ sơ`]
   ].map(([a,b,c],i)=>`<div class="stat k${i+1}"><i class="ico" aria-hidden="true">${['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2A4.6 4.6 0 0 1 21 18.5"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M7 15h3"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.6 2.6L16 9.6"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l1 2h3v14H5V6h3z"/><path d="M9 11h6M9 15h4"/></svg>'][i]}</i><span>${a}</span>${b}<small>${c}</small></div>`).join('');
+
+  // tiến trình hồ sơ đảng phí (mỗi bước tính trên số đảng viên phải nộp)
+  {const due=t.due,hasRec=t.pending+t.approved+t.paidCount,appr=t.approved+t.paidCount,paid=t.paidCount;
+   const P=x=>due>0?Math.min(1,x/due):0;
+   const steps=[['Phải nộp',due,'s1'],['Đã có hồ sơ',hasRec,'s2'],['Đã được duyệt',appr,'s3'],['Đã nộp',paid,'s4']];
+   const losses=[['chưa có hồ sơ',Math.max(0,due-hasRec)],['chưa được duyệt',t.pending],['đã duyệt nhưng chưa nộp',t.approved]];
+   const mx=Math.max(...losses.map(l=>l[1]));
+   let h='';steps.forEach(([l,n,c],i)=>{h+=`<div class="fn-row ${c}"><span class="fn-lab">${l}</span><div class="fn-bar"><i data-w="${(P(n)*100).toFixed(1)}%"></i></div><span class="fn-val"><b>${num(n)}</b><small>${pct(P(n))}</small></span></div>`;
+     if(i<3){const [ll,ln]=losses[i];h+=`<div class="fn-loss${ln>0&&ln===mx?' big':''}">↓ <b>${num(ln)}</b> đảng viên ${ll}${ln>0&&ln===mx?' · khâu tắc nhiều nhất':''}</div>`}});
+   h+=`<p class="fn-note">Phải nộp = tổng đảng viên − miễn giảm − chuyển sinh hoạt tạm thời (${num(t.exempt)} miễn giảm).</p>`;
+   $('#funnel').innerHTML=h;}
+  // tỷ lệ thu theo tiền
+  {const r=t.declared>0?t.paid/t.declared:0,left=Math.max(0,t.declared-t.paid),avg=t.paidCount>0?t.paid/t.paidCount:0;
+   $('#moneyRate').innerHTML=`<div class="mr-big"><strong>${pct(r)}</strong><span>số tiền kê khai đã thu được</span></div><div class="mr-track"><i data-w="${(Math.min(1,r)*100).toFixed(1)}%"></i></div><div class="mr-list"><div><span>Đã nộp</span><b>${money(t.paid)}</b></div><div><span>Kê khai theo hồ sơ</span><b>${money(t.declared)}</b></div><div class="due"><span>Còn phải thu</span><b>${money(left)}</b></div><div><span>Bình quân mỗi đảng viên đã nộp</span><b>${money(avg)}</b></div></div><p class="mr-cmp">Theo số người: <b>${pct(rate)}</b> đảng viên đã nộp. Tỷ lệ theo tiền chỉ tính trên những hồ sơ đã kê khai.</p>`;}
 
   // top 3
   const lead=units.filter(r=>v(r,'paidCount')>0).slice(0,3);
