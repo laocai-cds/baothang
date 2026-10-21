@@ -1,2 +1,5 @@
 # baothang
-Tình hình thu nộp đảng phí tại Đảng bộ xã Bảo Thắng
+
+Hệ thống theo dõi thu nộp đảng phí · Đảng bộ xã Bảo Thắng
+
+Trang: https://laocai-cds.github.io/baothang/
