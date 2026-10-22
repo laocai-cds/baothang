@@ -526,6 +526,17 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
 @media print{.bar,.notice,.livebar{display:none}.notice,main,.livebar,.foot{margin-left:0}}
 /* toàn bộ khung hình ở mức 90% trên máy tính */
 @media(min-width:1024px){html{zoom:.9}:root{--wrap:1360px}}
+/* đang tải: che số dự phòng bằng khung chờ */
+.loadnote{position:relative;display:inline-flex;align-self:flex-start;align-items:center;gap:8px;margin:14px 0 0;padding:6px 12px;border-radius:99px;background:#ffffff1f;border:1px solid #ffffff33;color:#fff;font-size:12.5px;font-weight:600}
+.loadnote::before{content:'';width:12px;height:12px;border-radius:50%;border:2px solid #ffffff66;border-top-color:var(--vang-l);animation:btspin .8s linear infinite}
+.loadnote.warn{background:var(--vang-bg);border-color:#ead79a;color:#6b4e00}
+.loadnote.warn::before{animation:none;border:0;width:auto;height:auto;content:'⚠'}
+@keyframes btspin{to{transform:rotate(360deg)}}
+@keyframes btsk{to{background-position:-200% 0}}
+.bt-loading .stat strong,.bt-loading .stat small,.bt-loading #donutpct,.bt-loading .fn-val,.bt-loading .fn-loss,.bt-loading .mr-big strong,.bt-loading .mr-list b,.bt-loading #dlegend b,.bt-loading #splitlegend b,.bt-loading #rowcount,.bt-loading #monthKpi b{color:transparent!important;-webkit-text-fill-color:transparent!important;background:linear-gradient(90deg,#eceef1 25%,#f7f8f9 50%,#eceef1 75%) 0 0/200% 100%!important;border-radius:6px;animation:btsk 1.2s linear infinite}
+.bt-loading #heroline b{color:transparent!important;background:linear-gradient(90deg,#ffffff1f 25%,#ffffff40 50%,#ffffff1f 75%) 0 0/200% 100%;border-radius:6px;animation:btsk 1.2s linear infinite}
+.bt-loading #podium>*,.bt-loading .tw tbody tr,.bt-loading #colchart>*,.bt-loading #chase>*,.bt-loading .fn-bar i,.bt-loading .mr-track i,.bt-loading #donutsvg .seg,.bt-loading #split>*{visibility:hidden}
+.bt-loading .tt-text{color:var(--muted)}
 /* tóm tắt tự động */
 .tomtat{margin-bottom:22px;border-left:4px solid var(--vang)}
 .tomtat .ph{align-items:center;margin-bottom:10px}
@@ -644,6 +655,7 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
         <p class="eyebrow">Bảng điều hành · <span id="heroDate"></span></p>
         <h1>Tình hình thu nộp đảng phí</h1>
         <p class="lede">Đảng bộ xã Bảo Thắng · tổng hợp từ các chi bộ, đảng bộ trực thuộc</p>
+        <p class="loadnote" id="loadNote" hidden></p>
         <div class="heroline" id="heroline"></div>
       </div>
       <aside class="dpanel" aria-label="Biểu đồ tròn tình hình thu">
@@ -895,8 +907,14 @@ function applySheet(d){
   return hit;
 }
 async function loadFromSheet(){const ep=sheetEndpoint();if(!ep){dataSrc='backup';return{state:'noep'}}
-  const done=r=>{dataSrc=r.state==='ok'?'sheet':(dataSrc==='sheet'?'sheet':'backup');return r};
-  try{const d=await jsonp(ep+'?action=read');if(!d||!d.ok)return done({state:'bad'});const hit=applySheet(d);return done(hit?{state:'ok',hit,lastSync:d.lastSync}:{state:'empty',lastSync:d.lastSync})}catch(e){return done({state:'fail'})}}
+  const done=r=>{dataSrc=r.state==='ok'?'sheet':(dataSrc==='sheet'||dataSrc==='cache'?dataSrc:'backup');if(r.state==='ok'){setLoading(false);showBackupNote(false)}return r};
+  try{const d=await jsonp(ep+'?action=read');if(!d||!d.ok)return done({state:'bad'});const hit=applySheet(d);
+    if(hit){try{localStorage.setItem('bt_cache',JSON.stringify({headers:d.headers,rows:d.rows,lastSync:d.lastSync||null,t:Date.now()}))}catch(_){}}
+    return done(hit?{state:'ok',hit,lastSync:d.lastSync}:{state:'empty',lastSync:d.lastSync})}catch(e){return done({state:'fail'})}}
+/* trạng thái đang tải / số liệu dự phòng */
+const BACKUP_STAMP='21/10/2026';
+function setLoading(on){document.body.classList.toggle('bt-loading',!!on);const n=$('#loadNote');if(!n)return;if(on){n.className='loadnote';n.textContent='Đang tải số liệu…';n.hidden=false}else if(n.className==='loadnote')n.hidden=true}
+function showBackupNote(on){const n=$('#loadNote');if(!n)return;if(on){n.className='loadnote warn';n.textContent='Chưa kết nối được Google Sheet, đang hiển thị số liệu dự phòng ngày '+BACKUP_STAMP+'.';n.hidden=false}else if(n.className==='loadnote warn')n.hidden=true}
 
 /* ===== Thu theo tháng ===== */
 const MONTH_TAB='Thu theo tháng';
@@ -984,9 +1002,13 @@ document.addEventListener('visibilitychange',()=>document.documentElement.classL
 function start(){
   liveUnits=[...INITIAL_UNITS];applyView();fillSyncMonth();
   try{$('#endpoint').value=localStorage.getItem('bt_endpoint')||'';$('#syncToken').value=localStorage.getItem('bt_token')||''}catch(e){}
-  dataSrc=sheetEndpoint()?'loading':'backup';
+  const hasEp=!!sheetEndpoint();let cached=null;
+  try{cached=JSON.parse(localStorage.getItem('bt_cache')||'null')}catch(_){}
+  if(hasEp&&cached&&Array.isArray(cached.headers)&&applySheet({ok:true,headers:cached.headers,rows:cached.rows,lastSync:cached.lastSync})){dataSrc='cache'}
+  else{dataSrc=hasEp?'loading':'backup';if(hasEp)setLoading(true);else showBackupNote(true)}
   render();
-  loadFromSheet().then(()=>{render();syncMonthly()});
+  const guard=dataSrc==='loading'?setTimeout(()=>{if(dataSrc==='loading'){dataSrc='backup';setLoading(false);showBackupNote(true);render()}},10000):0;
+  loadFromSheet().then(()=>{clearTimeout(guard);if(dataSrc!=='sheet'){setLoading(false);if(dataSrc==='backup')showBackupNote(true)}render();syncMonthly()});
   const tick=()=>{if(document.hidden)return;const before=sigOf(liveUnits);loadFromSheet().then(x=>{if(x.state==='ok'&&sigOf(liveUnits)!==before)render()})};
   setInterval(tick,60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick()});
   const h=location.hash.slice(1);page(['overview','units','import'].includes(h)?h:'overview',true);
@@ -1173,7 +1195,7 @@ function summaryText(t,rate){
   if(lead)s+=`Dẫn đầu là ${esc(nm(lead))} (${pct(v(lead,'progress'))}).`;
   return s.trim();
 }
-function renderSummary(t,rate){const el=$('#ttText');if(el)el.innerHTML=summaryText(t,rate)}
+function renderSummary(t,rate){const el=$('#ttText');if(el)el.innerHTML=dataSrc==='loading'?'Đang tải số liệu…':summaryText(t,rate)}
 function copyText(txt){const ok=()=>toast('Đã sao chép.');
   if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(txt).then(ok).catch(()=>fallback());fallback();
   function fallback(){const a=document.createElement('textarea');a.value=txt;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(_){toast('Không sao chép được, hãy chọn và sao chép thủ công.')}a.remove()}}
