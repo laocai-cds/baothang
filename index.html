@@ -1327,7 +1327,7 @@ tr{page-break-inside:avoid}
 <div class="cap">Bảng 1. Một số chỉ tiêu chính</div>
 <table><thead><tr><th style="width:44px">TT</th><th>Chỉ tiêu</th><th style="width:30%">Số liệu</th></tr></thead><tbody>${rows1.map((r,i)=>`<tr><td class="c">${i+1}</td><td>${r[0]}</td><td class="c">${r[1]}</td></tr>`).join('')}</tbody></table>
 <h3>II. Đơn vị dẫn đầu</h3>
-${top.length?`<p><b>Biểu dương:</b> ${top.length} đơn vị có tỷ lệ đảng viên đã nộp đảng phí cao nhất: ${top.map(r=>`${nm(r)} (${pc(v(r,'progress'))})`).join('; ')}. Đây là những đơn vị đã chủ động hướng dẫn đảng viên kê khai, duyệt hồ sơ và nộp đảng phí kịp thời.</p>
+${top.length?`<p><b>Biểu dương:</b> ${top.length} đơn vị có tỷ lệ đảng viên đã nộp đảng phí cao nhất: ${top.map(r=>`${esc(nm(r))} (${pc(v(r,'progress'))})`).join('; ')}. Đây là những đơn vị đã chủ động hướng dẫn đảng viên kê khai, duyệt hồ sơ và nộp đảng phí kịp thời.</p>
 <div class="cap">Bảng 2. ${top.length===3?'Ba':top.length} đơn vị dẫn đầu</div>
 <table><thead><tr><th style="width:44px">Hạng</th><th>Đơn vị</th><th>ĐV phải nộp</th><th>ĐV đã nộp</th><th>Tỷ lệ</th><th>Tiền đã nộp (đ)</th></tr></thead><tbody>${top.map((r,i)=>`<tr><td class="c">${i+1}</td><td>${esc(nm(r))}</td><td class="c">${fm(v(r,'due'))}</td><td class="c">${fm(v(r,'paidCount'))}</td><td class="c">${pc(v(r,'progress'))}</td><td>${fm(v(r,'paid'))}</td></tr>`).join('')}</tbody></table>
 ${others.length?`<p>Ngoài ra còn ${others.length} đơn vị khác cũng đã hoàn thành: ${esc(list(others))}.</p>`:''}`:'<p>Chưa có đơn vị nào phát sinh nộp đảng phí.</p>'}
@@ -1406,7 +1406,7 @@ const drop=$('#drop');
 drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};
 drop.ondragleave=()=>drop.classList.remove('over');
 drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');if(e.dataTransfer.files[0])readExcel(e.dataTransfer.files[0])};
-let __xl=null;function loadXLSX(){if(window.XLSX)return Promise.resolve();return __xl||(__xl=new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';sc.onload=res;sc.onerror=()=>{__xl=null;rej(new Error('xlsx'))};document.head.appendChild(sc)}))}
+let __xl=null;function loadXLSX(){if(window.XLSX)return Promise.resolve();return __xl||(__xl=new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';sc.integrity='sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw';sc.crossOrigin='anonymous';sc.onload=res;sc.onerror=()=>{__xl=null;rej(new Error('xlsx'))};document.head.appendChild(sc)}))}
 function readExcel(file){
   const reader=new FileReader();
   reader.onload=async e=>{
