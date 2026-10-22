@@ -944,6 +944,7 @@ function renderMonthly(){
 function fillSyncMonth(){const el=$('#syncMonth');if(!el)return;const now=new Date();let h='';for(let i=0;i<12;i++){const d=new Date(now.getFullYear(),now.getMonth()-i,1),k=mkey(d);h+=`<option value="${k}">Tháng ${d.getMonth()+1}/${d.getFullYear()}${i===0?' (hiện tại)':''}</option>`}el.innerHTML=h}
 function pushMonthly(ep,k){
   const tk=($('#syncToken')&&$('#syncToken').value.trim())||'';
+  if(!tk)return;// chỉ máy đã nhập mã đồng bộ mới ghi lên Google Sheet (tránh ghi lỗi vào nhật ký mỗi lần có người mở trang)
   const post=b=>{try{fetch(ep,{method:'POST',mode:'no-cors',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(b)})}catch(_){}};
   if(k&&msnap[k]){const rows=msnap[k].rows.map(r=>MCOLS.map((h,i)=>{const x=r[h];if(x==null)return '';return i>=2&&i<=12?pnum(x):(i===13?v(r,'progress'):x)}));
     post({tab:monthTab(k),headers:MGROUP,rows:[MCOLS,...rows],token:tk,source:'website-month-sheet'})}
