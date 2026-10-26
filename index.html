@@ -407,8 +407,26 @@ label.f{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var
 /* =================== màn hình vừa =================== */
 @media(max-width:1280px){
   .strip .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .hero .wrap{grid-template-columns:1fr}
+  .hero .wrap{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px}
+  .hero .wrap>div:first-child{padding:22px 22px 20px}
+  .hero .wrap>div:first-child::after{left:22px;right:22px}
+  .hero h1{font-size:clamp(1.25rem,2.1vw,1.6rem)}
+  .hero .lede{font-size:13.5px}
+  .heroline{padding-top:14px}
+  .heroline>div{padding:10px 12px 10px 0}
+  .heroline>div:nth-child(2n){padding-left:14px}
+  .heroline b{font-size:1.2rem}
+  .dpanel{padding:16px 18px}
+  .dbody{grid-template-columns:minmax(0,138px) minmax(0,1fr);gap:16px;margin-top:10px}
+  .dlegend{gap:9px}
+  .dcenter strong{font-size:1.3rem}
+  .dcenter span{font-size:10px;line-height:1.25;max-width:84px}
   .wrap{padding:0 26px}
+}
+@media(max-width:900px){
+  .hero .wrap{grid-template-columns:1fr}
+  .hero .wrap>div:first-child{padding:24px 24px 22px}
+  .dbody{grid-template-columns:minmax(0,170px) minmax(0,1fr)}
 }
 /* =================== máy tính bảng, điện thoại =================== */
 @media(max-width:1023px){
