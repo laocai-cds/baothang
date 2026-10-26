@@ -1622,7 +1622,7 @@ const FB_CFG={apiKey:"AIzaSyCmdiL9Gij6DmNKt_vke5DtAIVsfw9RacA",authDomain:"baoth
 <script>
 (()=>{
   /* Đặt ngay sau hàng thẻ số liệu, phía trên nhóm "Tổng quan nhanh". */
-  const pod=document.querySelector('#podium');const anchor=pod&&pod.closest('.panel');
+  const anchor=document.querySelector('#tom-tat');
   if(!anchor||document.querySelector('#unit-news'))return;
   /* Dữ liệu tin do GitHub Actions gom mỗi 30 phút (news/pool.json). Trang con có thể đặt
      window.RSS_POOL='https://laocai-cds.github.io/mau/news/pool.json' để dùng chung; window.RSS_UNIT để ghi đè tên đơn vị. */
