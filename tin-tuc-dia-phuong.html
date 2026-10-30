@@ -52,6 +52,7 @@ const nkeep=t=>' '+String(t||'').normalize('NFC').toLowerCase().replace(/[^\p{L}
 const nplain=t=>nkeep(String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d'));
 const nmarks=t=>/[\u0300-\u036f]|[ăâêôơưđ]/i.test(String(t||'').normalize('NFD'));
 const mentions=(t,ph)=>nkeep(t).includes(nkeep(ph))||(!nmarks(t)&&nplain(t).includes(nplain(ph)));
+  const headMention=(t,b)=>{const s=String(t||'').normalize('NFC').toLowerCase().replace(/^[\s"'“”‘’\[\(]+/,''),h=String(b||'').normalize('NFC').toLowerCase();if(!h)return false;const e=h.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return(s.startsWith(h)&&/^\s*[:\-–—]/.test(s.slice(h.length)))||new RegExp('(^|[^\\p{L}])(xã|phường|đảng bộ|đảng ủy|ubnd|hđnd)\\s+'+e+'(?![\\p{L}])','u').test(s)};
 const firstSent=i=>(i.title||'')+' '+((i.desc||'').split(/(?<=[.!?…])\s+/)[0]||'').slice(0,220);
 function foreign(i){
   const src=String(i.source||'');
@@ -113,7 +114,7 @@ async function loadNews(force){
     const d=await r.json();if(!Array.isArray(d.items))throw Error('bad');
     const seenU=new Set(),seenT=new Set(),lim=Date.now()+864e5,bare=NEWS_UNIT.replace(/^(xã|phường)\s+/i,'');
     const ok=d.items.filter(i=>!foreign(i)&&!badItem(i,seenU,seenT,lim));
-    const items=ok.filter(i=>!i.bad&&/^https?:\/\//i.test(i.url||'')&&((i.us||[]).includes(NEWS_UNIT)||mentions(firstSent(i),NEWS_UNIT)||mentions(i.title||'',bare)))
+    const items=ok.filter(i=>!i.bad&&/^https?:\/\//i.test(i.url||'')&&((i.us||[]).includes(NEWS_UNIT)||mentions(firstSent(i),NEWS_UNIT)||headMention(i.title||'',bare)))
       .sort((a,b)=>(Date.parse(b.published)||0)-(Date.parse(a.published)||0)).slice(0,30);
     ul.replaceChildren();
     if(!items.length){ul.append(newsEl('li','nw-empty','Chưa có tin nào nhắc tới xã Bảo Thắng. Dữ liệu tự cập nhật mỗi 30 phút.'))}
