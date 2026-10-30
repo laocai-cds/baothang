@@ -109,7 +109,8 @@ async function loadNews(force){
   if(!force&&newsState==='ok'&&Date.now()-newsAt<10*60*1000)return;
   newsState='loading';ul.replaceChildren(newsEl('li','nw-empty','Đang tải tin tức…'));foot.textContent='';
   try{
-    const r=await fetch(NEWS_POOL,{cache:'no-cache'});
+    let r=await fetch(NEWS_POOL.replace(/pool\.json$/,'units/xa-bao-thang.json'),{cache:'no-cache'}).catch(()=>null);
+    if(!r||!r.ok)r=await fetch(NEWS_POOL,{cache:'no-cache'}); /* file riêng của xã nhỏ, tải nhanh; thiếu thì dùng file chung */
     if(!r.ok)throw Error('HTTP '+r.status);
     const d=await r.json();if(!Array.isArray(d.items))throw Error('bad');
     const seenU=new Set(),seenT=new Set(),lim=Date.now()+864e5,bare=NEWS_UNIT.replace(/^(xã|phường)\s+/i,'');
