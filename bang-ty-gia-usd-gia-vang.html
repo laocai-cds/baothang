@@ -207,6 +207,25 @@ tr.grp[data-b="LC"] td{background:linear-gradient(90deg,#db2777,#f472b6)}
   .panel-b,.panel-h{padding-left:14px;padding-right:14px}
 }
 .embed .back{display:none}
+/* ===== Tin tức địa phương ===== */
+.nw-list{list-style:none;margin:0;padding:6px 10px}
+.nw-item a{display:flex;gap:10px;align-items:flex-start;padding:8px 6px;border-bottom:1px solid #eef2f6;color:inherit;text-decoration:none;border-radius:8px}
+.nw-item:last-child a{border-bottom:0}
+.nw-item a:hover{background:#f8fafc}
+.nw-item a:hover .nw-t{color:#b91c1c}
+.nw-th{flex:none;width:56px;height:42px;border-radius:7px;object-fit:cover;background:#f1f5f9;border:1px solid var(--line)}
+.nw-dt{flex:none;width:56px;height:42px;border-radius:7px;border:1px solid var(--line);background:#fef9e7;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05}
+.nw-dt b{font-size:16px;color:var(--navy)}.nw-dt small{font-size:9.5px;font-weight:700;color:#b91c1c;text-transform:uppercase}
+.nw-b{min-width:0;flex:1}
+.nw-t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:600;font-size:13px;line-height:1.4;color:var(--ink)}
+.nw-s{margin:2px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11.5px;line-height:1.4;color:var(--muted)}
+.nw-m{display:flex;flex-wrap:wrap;gap:4px 7px;align-items:center;margin-top:3px;font-size:11px;color:var(--muted)}
+.nw-src{padding:1px 7px;border-radius:999px;background:#fef3c7;color:#7a5a0a;font-weight:700;font-size:10.5px}
+.nw-new{padding:1px 7px;border-radius:999px;background:#dc2626;color:#fff;font-weight:800;font-size:10px}
+.nw-more{display:block;margin:4px auto 8px}
+.nw-empty{padding:26px 16px;text-align:center;color:var(--muted);font-size:13px}
+.nw-foot{margin:0;padding:6px 14px 10px;font-size:10.5px;color:var(--muted)}
+
 </style>
 <script>if(self!==top)document.documentElement.classList.add("embed")</script>
 </head>
@@ -237,7 +256,7 @@ tr.grp[data-b="LC"] td{background:linear-gradient(90deg,#db2777,#f472b6)}
 
   <section class="layout">
     <article class="panel">
-      <div class="panel-h tabs"><div><h2>Bảng giá vàng</h2><p id="tabSub">Giá mua – bán theo thương hiệu · đơn vị: đồng/lượng</p></div><div class="tabbar" role="tablist"><button class="tab on" data-t="all" role="tab">Cả nước</button><button class="tab" data-t="lc" role="tab">📍 Lào Cai</button></div></div>
+      <div class="panel-h tabs"><div><h2 id="panelTitle">Bảng giá vàng</h2><p id="tabSub">Giá mua – bán theo thương hiệu · đơn vị: đồng/lượng</p></div><div class="tabbar" role="tablist"><button class="tab on" data-t="all" role="tab">Cả nước</button><button class="tab" data-t="lc" role="tab">📍 Lào Cai</button><button class="tab" data-t="news" role="tab">📰 Tin tức địa phương</button></div></div>
       <div class="tw" id="allBox"><table>
         <thead><tr><th>Sản phẩm</th><th>Mua vào</th><th>Bán ra</th><th>Chênh lệch</th><th>Biến động</th></tr></thead>
         <tbody id="goldRows"><tr><td colspan="5" class="empty">Đang tải dữ liệu…</td></tr></tbody>
@@ -253,6 +272,7 @@ tr.grp[data-b="LC"] td{background:linear-gradient(90deg,#db2777,#f472b6)}
           <p class="lcnote">Chưa có nguồn công khai nào công bố giá riêng cho Lào Cai nên các dòng trên là giá niêm yết tham chiếu của thương hiệu (khu vực Hà Nội/miền Bắc). Giá tại tiệm ở Lào Cai có thể lệch; hãy nhập giá tiệm bạn theo dõi để hiển thị cùng bảng.</p>
         </form>
       </div>
+      <div class="tw" id="newsBox" hidden><ul class="nw-list" id="newsList"></ul><p class="nw-foot" id="newsFoot"></p></div>
     </article>
 
     <aside class="panel side">
@@ -379,12 +399,109 @@ async function update(){
   if(ok<2){msg.textContent='Một phần dữ liệu chưa tải được; bảng đang giữ giá gần nhất đã có, không thay bằng số liệu ước đoán.';msg.classList.add('show')}
   btn.disabled=false;btn.textContent='↻ Cập nhật giá';
 }
+const TAB_INFO={
+  all:['Bảng giá vàng','Giá mua – bán theo thương hiệu · đơn vị: đồng/lượng'],
+  lc:['Bảng giá vàng','Giá tham chiếu cho khu vực Lào Cai · đơn vị: đồng/lượng'],
+  news:['Tin tức địa phương','Tin tích cực về xã Bảo Thắng từ báo chính thống · tự cập nhật mỗi 30 phút']
+};
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
-  const lc=b.dataset.t==='lc';
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===b));
-  $('#allBox').hidden=lc;$('#lcBox').hidden=!lc;
-  $('#tabSub').textContent=lc?'Giá tham chiếu cho khu vực Lào Cai · đơn vị: đồng/lượng':'Giá mua – bán theo thương hiệu · đơn vị: đồng/lượng';
+  const t=b.dataset.t;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
+  $('#allBox').hidden=t!=='all';$('#lcBox').hidden=t!=='lc';$('#newsBox').hidden=t!=='news';
+  $('#panelTitle').textContent=TAB_INFO[t][0];$('#tabSub').textContent=TAB_INFO[t][1];
+  if(t==='news')loadNews();
 }));
+
+/* ===== Tin tức địa phương: dùng chung nguồn và bộ lọc với khối tin ở trang Tổng quan ===== */
+const NEWS_UNIT='xã Bảo Thắng',NEWS_POOL='https://laocai-cds.github.io/mau/news/pool.json';
+const VN7=7*36e5,vnDay=ms=>Math.floor((ms+VN7)/864e5);
+const nkeep=t=>' '+String(t||'').normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim()+' ';
+const nplain=t=>nkeep(String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d'));
+const nmarks=t=>/[\u0300-\u036f]|[ăâêôơưđ]/i.test(String(t||'').normalize('NFD'));
+const mentions=(t,ph)=>nkeep(t).includes(nkeep(ph))||(!nmarks(t)&&nplain(t).includes(nplain(ph)));
+const firstSent=i=>(i.title||'')+' '+((i.desc||'').split(/(?<=[.!?…])\s+/)[0]||'').slice(0,220);
+function foreign(i){
+  const src=String(i.source||'');
+  if(/Lào Cai/i.test(src))return false;
+  if(/(Báo|Đài|Cổng)[^|]*(Phú Thọ|Lai Châu|Hà Giang|Tuyên Quang|Sơn La|Điện Biên|Thanh Hóa|Nghệ An|Hà Tĩnh|Quảng Ninh|Hải Phòng|Hà Nội|Thành phố Hồ Chí Minh|Sài Gòn|Đà Nẵng|Cần Thơ|Huế|Khánh Hòa|Lâm Đồng|Đắk Lắk|Gia Lai|Đồng Nai|Tây Ninh|An Giang|Cà Mau)/i.test(src))return true;
+  const t=firstSent(i);
+  if(/Lào Cai|Yên Bái/i.test(t))return false;
+  return /(^|[^\p{L}])(Phú Thọ|Vĩnh Phúc|Hòa Bình|TP\.? ?HCM|TP\.? Hồ Chí Minh|Thành phố Hồ Chí Minh|Hà Nội|Phú Quốc|Đà Nẵng|Hải Phòng|Thanh Hóa|Nghệ An|Quảng Ninh|Sơn La|Điện Biên|Lai Châu|Hà Giang|Tuyên Quang|Thái Nguyên|Bắc Ninh|Cần Thơ|Lâm Đồng|Đắk Lắk|Gia Lai|An Giang|Đồng Nai|Hưng Yên|Ninh Bình|Cao Bằng|Lạng Sơn|Hà Tĩnh|Quảng Trị|Quảng Ngãi|Cà Mau|Tây Ninh)(?![\p{L}])/u.test(t);
+}
+function badItem(i,seenU,seenT,lim){
+  if(!i||typeof i!=='object')return true;
+  const t=String(i.title||'').replace(/\s+/g,' ').trim();
+  if(t.length<10||/<[a-z\/!][^>]*>|&#?\w+;/i.test(t))return true;
+  if(t.length<70&&/^\s*(404|403|500|502|503)\b|not found|access denied|forbidden|just a moment|bad gateway|không tìm thấy|lỗi (máy chủ|truy cập|hệ thống)|^\s*(error|lỗi)\s*$/i.test(t))return true;
+  if(!/^https?:\/\/[^\s]+$/i.test(String(i.url||'')))return true;
+  const ms=Date.parse(i.published);if(isNaN(ms)||ms>lim)return true;
+  const ku=String(i.url).replace(/[#?].*$/,'').replace(/\/+$/,'').toLowerCase(),kt=t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+  if(seenU.has(ku)||seenT.has(kt))return true;
+  seenU.add(ku);seenT.add(kt);return false;
+}
+function newsSummary(desc,title){
+  let t=String(desc||'').replace(/\s+/g,' ').trim();const ti=String(title||'').trim();
+  if(ti&&t.toLowerCase().startsWith(ti.toLowerCase()))t=t.slice(ti.length).replace(/^[\s:.\-–—]+/,'');
+  if(t.length<25)return'';if(t.length<=150)return t;
+  const cut=t.slice(0,150),sp=cut.lastIndexOf(' ');return cut.slice(0,sp>100?sp:150).replace(/[\s,;:.\-–—]+$/,'')+'…';
+}
+function newsWhen(ms){
+  const d=vnDay(Date.now())-vnDay(ms);
+  if(d<=0)return'Hôm nay';if(d===1)return'Hôm qua';if(d<7)return d+' ngày trước';
+  const v=new Date(ms+VN7);return String(v.getUTCDate()).padStart(2,'0')+'/'+String(v.getUTCMonth()+1).padStart(2,'0')+'/'+v.getUTCFullYear();
+}
+function newsEl(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+function newsCard(it){
+  const li=newsEl('li','nw-item'),a=newsEl('a');a.href=it.url;a.target='_blank';a.rel='noopener noreferrer';
+  const ms=Date.parse(it.published),v=new Date(ms+VN7);
+  const dt=newsEl('div','nw-dt');dt.append(newsEl('b',null,String(v.getUTCDate()).padStart(2,'0')),newsEl('small',null,'Th'+(v.getUTCMonth()+1)));
+  let lead=dt;
+  if(/^https:\/\//i.test(it.img||'')){
+    const im=newsEl('img','nw-th');im.src=it.img;im.alt='';im.loading='lazy';im.decoding='async';im.referrerPolicy='no-referrer';im.width=56;im.height=42;
+    im.addEventListener('error',()=>im.replaceWith(dt));lead=im;
+  }
+  const b=newsEl('div','nw-b');b.append(newsEl('div','nw-t',it.title||'Tin tức'));
+  const sm=newsSummary(it.desc,it.title);if(sm)b.append(newsEl('p','nw-s',sm));
+  const m=newsEl('div','nw-m');
+  if(vnDay(Date.now())===vnDay(ms))m.append(newsEl('span','nw-new','MỚI'));
+  if(it.source)m.append(newsEl('span','nw-src',it.source));
+  m.append(newsEl('span',null,newsWhen(ms)));b.append(m);
+  a.append(lead,b);li.append(a);return li;
+}
+let newsState='idle',newsAt=0;
+async function loadNews(force){
+  const ul=$('#newsList'),foot=$('#newsFoot');
+  if(newsState==='loading')return;
+  if(!force&&newsState==='ok'&&Date.now()-newsAt<10*60*1000)return;
+  newsState='loading';ul.replaceChildren(newsEl('li','nw-empty','Đang tải tin tức…'));foot.textContent='';
+  try{
+    const r=await fetch(NEWS_POOL,{cache:'no-cache'});
+    if(!r.ok)throw Error('HTTP '+r.status);
+    const d=await r.json();if(!Array.isArray(d.items))throw Error('bad');
+    const seenU=new Set(),seenT=new Set(),lim=Date.now()+864e5,bare=NEWS_UNIT.replace(/^(xã|phường)\s+/i,'');
+    const ok=d.items.filter(i=>!foreign(i)&&!badItem(i,seenU,seenT,lim));
+    const items=ok.filter(i=>!i.bad&&/^https?:\/\//i.test(i.url||'')&&((i.us||[]).includes(NEWS_UNIT)||mentions(firstSent(i),NEWS_UNIT)||mentions(i.title||'',bare)))
+      .sort((a,b)=>(Date.parse(b.published)||0)-(Date.parse(a.published)||0)).slice(0,30);
+    ul.replaceChildren();
+    if(!items.length){ul.append(newsEl('li','nw-empty','Chưa có tin nào nhắc tới xã Bảo Thắng. Dữ liệu tự cập nhật mỗi 30 phút.'))}
+    else{
+      const SHOW=6;
+      items.forEach((it,i)=>{const c=newsCard(it);if(i>=SHOW){c.hidden=true;c.classList.add('nw-x')}ul.append(c)});
+      if(items.length>SHOW){
+        const li=newsEl('li'),mb=newsEl('button','btn ghost nw-more','Xem tiếp '+(items.length-SHOW)+' bài');mb.type='button';
+        mb.addEventListener('click',()=>{const open=li.dataset.open!=='1';li.dataset.open=open?'1':'0';ul.querySelectorAll('.nw-x').forEach(x=>x.hidden=!open);mb.textContent=open?'Thu gọn':'Xem tiếp '+(items.length-SHOW)+' bài'});
+        li.append(mb);ul.append(li);
+      }
+    }
+    const t=d.updatedAt?new Date(d.updatedAt).toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',timeZone:'Asia/Ho_Chi_Minh'}):'';
+    foot.textContent='Tin tổng hợp từ báo chính thống có RSS, chỉ gồm bài nhắc tới xã Bảo Thắng; bấm vào để đọc bài gốc.'+(t?' Dữ liệu cập nhật '+t+'.':'');
+    newsState='ok';newsAt=Date.now();
+  }catch(e){
+    newsState='idle';ul.replaceChildren();
+    const li=newsEl('li','nw-empty','Chưa tải được tin tức. '),b=newsEl('button','btn ghost','Thử lại');b.type='button';b.addEventListener('click',()=>loadNews(true));
+    li.append(b);ul.append(li);
+  }
+}
 if(lcShop){$('#lcName').value=lcShop.name||'';$('#lcBuy').value=lcShop.buy;$('#lcSell').value=lcShop.sell}
 $('#lcForm').addEventListener('submit',e=>{
   e.preventDefault();const buy=+$('#lcBuy').value,sell=+$('#lcSell').value;
