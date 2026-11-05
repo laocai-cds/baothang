@@ -702,6 +702,7 @@ html:not(.is-admin) .admin-only{display:none!important}
 .tsTabs{display:flex;gap:6px;border-bottom:2px solid var(--rule);margin:0 0 14px;overflow-x:auto;scrollbar-width:none}.tsTabs::-webkit-scrollbar{display:none}
 .tsTabs button{flex:none;border:0;background:none;padding:10px 18px;font:700 14px inherit;font-family:inherit;color:#667;border-radius:10px 10px 0 0;cursor:pointer;margin-bottom:-2px;border-bottom:3px solid transparent;white-space:nowrap}
 .tsTabs button[hidden]{display:none}.tabsum #monthPanel,.tabsum .tsPane>.fc{margin:0}.tabsum .tsPane>.fc{border:0;box-shadow:none;padding:0;background:none}.tabsum .tsPane>.fc>.ph{display:none}
+.tabsum .tsPane>.tablepanel{margin:0}.tabsum .cols{margin-bottom:0}.tabsum .cols>.panel{border:0;box-shadow:none;padding:0;background:none}.tabsum .cols>.panel>.ph{display:none}
 .tsTabs button:hover{color:var(--son)}.tsTabs button.on{color:var(--son);border-bottom-color:var(--son);background:rgba(179,20,28,.06)}
 .tsPane{display:none}.tsPane.on{display:block}
 .tabsum .tsPane>.panel,.tabsum .tomtat{border:0;box-shadow:none;padding:0;margin:0;background:none;border-radius:0}
@@ -864,6 +865,10 @@ go();document.addEventListener('DOMContentLoaded',go);
     </div>
       </div>
     </div>
+    <div class="panel pad tabsum" id="tabUnits" style="margin-bottom:20px">
+      <div class="ph"><h2>Các đơn vị trực thuộc</h2></div>
+      <div class="tsTabs" role="tablist"><button type="button" class="on" data-p="a">Trạng thái các đơn vị</button><button type="button" data-p="b">Tình hình các đơn vị</button></div>
+      <div class="tsPane on" data-p="a">
     <div class="cols">
       <div class="panel pad">
         <div class="ph"><h2>Trạng thái các đơn vị</h2></div>
@@ -873,7 +878,8 @@ go();document.addEventListener('DOMContentLoaded',go);
         <div id="chase"></div>
       </div>
     </div>
-
+      </div>
+      <div class="tsPane" data-p="b">
     <div class="panel tablepanel">
       <div class="thead">
         <div class="ph"><h2>Tình hình các đơn vị</h2><small id="rowcount"></small></div>
@@ -895,6 +901,8 @@ go();document.addEventListener('DOMContentLoaded',go);
       </table></div>
       <div id="noresult" class="noresult" hidden>Không có đơn vị nào khớp. Thử xóa từ khóa hoặc chọn “Tất cả”.</div>
       <div class="tfoot" id="totalunits"></div>
+    </div>
+      </div>
     </div>
   </div>
 </section>
