@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bảng điều khiển · Đảng bộ xã Bảo Thắng</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--r:#b3141c;--rd:#7a0f16;--rdd:#5c0a10;--gold:#c9a227;--ink:#1d2326;--mut:#667;--line:#ead8d8;--ok:#2f7d4f;--bg:#f6f3f3;--serif:Georgia,"Times New Roman",serif}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);font:14px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);min-height:100vh}
+.hd{background:linear-gradient(180deg,#a8161e,var(--rd));color:#fff;padding:12px clamp(14px,2.4vw,32px);display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 4px 14px -8px #0008;border-bottom:3px solid var(--gold)}
+.hd img{width:40px;height:40px;border-radius:10px;background:#fff;object-fit:contain}.hd b{font:800 17px var(--serif);color:#ffd84d;letter-spacing:.04em;white-space:nowrap}.hd .sub{opacity:.85;font-size:13px}.hd .sp{flex:1}
+.hd a{color:#fff;text-decoration:none;border:1px solid #ffffff55;border-radius:10px;padding:6px 12px;font-weight:600;font-size:13px;background:#ffffff14}.hd a:hover{background:#ffffff30}
+.pill{font-size:12px;padding:3px 10px;border-radius:99px;background:#ffffff22;white-space:nowrap}.pill.warn{background:#ffe9a8;color:#6b4a00;font-weight:700}
+main{padding:clamp(12px,2vw,24px) clamp(14px,2.4vw,32px);max-width:1680px;margin:0 auto}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 6px 18px -14px #0006;min-width:0}
+.card h3{font:700 15px var(--serif);color:var(--rd);margin:0 0 10px;display:flex;gap:8px;align-items:center}.card h3:before{content:"";width:4px;height:15px;background:var(--gold);border-radius:2px}
+.card h3 small{font:500 12px Inter,system-ui,sans-serif;color:var(--mut);margin-left:auto}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.kpi small{display:block;color:var(--mut);font-size:12px}.kpi b{display:block;font:800 clamp(20px,2.1vw,28px)/1.25 var(--serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.kpi i{font-style:normal;font-size:12px;color:var(--mut)}
+.kpi.main b{color:var(--r)}.kpi.ok b{color:var(--ok)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1.1fr);gap:14px;align-items:stretch}
+.donut{display:flex;flex-direction:column;align-items:center}.donut svg{width:min(210px,100%);height:auto}
+.leg{width:100%;margin-top:12px;font-size:13px}.leg div{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #f0e6e6}.leg div:last-child{border:0}.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
+.mchart{position:relative;display:flex;gap:6px;height:170px;align-items:flex-end;border-bottom:1px solid #e5d5d5;padding-top:6px}.mchart .c{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;cursor:default}
+.mchart .c i{display:block;width:62%;max-width:34px;border-radius:5px 5px 0 0;background:#e8c9c9;min-height:3px;transition:height .8s}.mchart .c.sel i{background:linear-gradient(180deg,#d4262e,var(--r))}.mchart .c em{font:600 10.5px/1 Inter,sans-serif;font-style:normal;color:var(--mut);margin-bottom:4px;white-space:nowrap}
+.mchart svg.tr{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}.mchart svg.tr path{fill:none;stroke:#1e6fd9;stroke-width:2.2;stroke-linecap:round}.mchart svg.tr circle{fill:#fff;stroke:#1e6fd9;stroke-width:2}
+.mlab{display:flex;gap:6px;font-size:10.5px;color:#889;margin-top:4px}.mlab span{flex:1;text-align:center}.mlab span.sel{color:var(--r);font-weight:800}
+.say{margin:12px 0 8px;padding:9px 12px;border-radius:10px;background:#fbeeee;border:1px solid #f0d0d0;font-size:13px}.say .up{color:#1f7a3d}.say .dn{color:#c1121f}
+.fc h4{margin:6px 0 6px;font:700 13px var(--serif);color:var(--rd)}.bar{height:8px;background:#eee;border-radius:9px;position:relative;overflow:hidden}.bar i{position:absolute;left:0;top:0;bottom:0}
+.fc small{color:var(--mut);font-size:12px}
+.list .row{display:grid;grid-template-columns:minmax(0,1fr) auto 62px;gap:8px;padding:6px 0;border-bottom:1px solid #f4ebeb;font-size:12.5px;align-items:center}.list .row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.list .row small{color:var(--mut);white-space:nowrap}.list .row b{text-align:right;color:var(--r)}
+.more{display:inline-block;margin-top:8px;color:var(--r);font-weight:700;font-size:13px;text-decoration:none}
+.foot{text-align:center;color:var(--mut);font-size:12px;padding:14px}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.cols{grid-template-columns:1fr 1fr}.cols>.list{grid-column:1/-1}}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}.hd .sub{display:none}.mchart{height:140px}}
+</style></head><body>
+<header class="hd"><img src="logo.png" alt=""><b>ĐẢNG BỘ XÃ BẢO THẮNG</b><span class="sub">Bảng điều khiển thu nộp đảng phí</span><span class="sp"></span><span class="pill" id="stamp">Đang tải…</span><a href="./">Trang chi tiết ›</a></header>
+<main>
+<section class="kpis" id="kpis"></section>
+<section class="cols">
+  <div class="card donut"><h3>Tỷ lệ toàn xã <small id="dSub"></small></h3><div id="donut"></div><div class="leg" id="leg"></div></div>
+  <div class="card"><h3>Thu theo tháng <small>triệu đồng · đường xanh = xu hướng</small></h3><div class="mchart" id="mchart"></div><div class="mlab" id="mlab"></div><div class="say" id="say"></div>
+    <div class="fc"><h4>Dự báo cuối tháng</h4><div class="bar" id="fbar"></div><small id="ftxt"></small></div></div>
+  <div class="card list"><h3>Cần xử lý ngay <small id="lSub"></small></h3><div id="rows"></div><a class="more" href="./">Xem tất cả đơn vị ›</a></div>
+</section>
+</main>
+<div class="foot">Thiết kế thử nghiệm · số liệu lấy từ Google Sheet của Đảng ủy xã Bảo Thắng · <a href="./" style="color:var(--r)">Về trang chính</a></div>
+<script>
+const EP='https://script.google.com/macros/s/AKfycbxAaE46jDGIDki4cYGffdymtqMqJDfnutoP7QsVgLM8kyMu-3gpBxfdEZGn8HMsWrR1/exec';
+const KEYS={stt:'STT',name:'Tên đơn vị',members:'Tổng sl đảng viên (1)',pending:'Chưa duyệt (6)',paidCount:'Đã duyệt, đã nộp (8)',unfiled:'Số đảng viên chưa có hồ sơ (9)',paid:'Tổng tiền đã nộp',exempt:'Số lượng được miễn giảm ĐP (5)',moved:'Số lượng ĐV đã chuyển sinh hoạt đảng tạm thời (4)',approved:'Đã duyệt, chưa nộp (7)'};
+/* số liệu dự phòng (kỳ 21/10/2026) khi chưa đọc được Google Sheet: [tên, đảng viên, phải nộp, đã nộp, chưa hồ sơ, chưa duyệt, chưa nộp, tiền] */
+const SNAP=[["Đảng bộ Trường Tiểu học Phố Lu",107,107,107,0,0,0,15293000],["Chi bộ Ban Quản lý rừng phòng hộ khu vực Văn Bàn",23,23,23,0,0,0,2250000],["Chi bộ Uỷ ban MTTQ Việt Nam xã",21,21,21,0,0,0,2089000],["Chi bộ Văn phòng Đảng uỷ",11,11,11,0,0,0,1267000],["Chi bộ Trung tâm Chính trị Bảo Thắng",5,5,5,0,0,0,582000],["Chi bộ UBKT Đảng uỷ",5,5,5,0,0,0,511000],["Đảng bộ Trường THCS Phố Lu",81,81,78,0,3,0,10692000],["Đảng bộ Trường mầm non Bình Minh",98,98,94,2,0,2,10012000],["Chi bộ Ban quản lý dự án đầu tư xây dựng",23,23,22,0,0,1,1861000],["Chi bộ Phòng Văn hoá - Xã hội",15,15,14,1,0,0,1212000],["Chi bộ Ban Xây dựng Đảng",7,7,6,1,0,0,539000],["Đảng bộ Trường Mầm non Họa Mi",50,50,42,3,0,5,4260000],["Chi bộ Trạm y tế",22,22,15,0,0,7,1386000],["Chi bộ Văn phòng HĐND & UBND",20,20,4,7,2,7,443000],["Đảng bộ Trường PTDTNT THCS & THPT",38,38,4,33,1,0,586000],["Chi bộ thôn Phú Thành",178,178,18,66,0,94,834000],["Chi bộ thôn Cường Thịnh",119,119,11,81,7,20,408000],["Đảng bộ Trường THCS Thái Niên",45,45,3,3,12,27,439000],["Chi bộ Bưu điện",8,8,0,8,0,0,0],["Chi bộ Chi nhánh Văn phòng đăng kí đất đai khu vực Bảo Thắng",8,8,0,1,7,0,0],["Chi bộ Công ty CP Lâm nghiệp",5,5,0,0,5,0,0],["Chi bộ Công ty CP đường bộ 242",17,17,0,17,0,0,0],["Chi bộ Doanh nghiệp tư nhân Nguyễn Công Chiểu",7,7,0,7,0,0,0],["Chi bộ Hạt kiểm lâm",24,24,0,24,0,0,0],["Chi bộ Ngân hàng chính sách xã hội",12,12,0,12,0,0,0],["Chi bộ Phòng Kinh tế",14,14,0,13,1,0,0],["Chi bộ Quản lý thị trường",9,9,0,8,1,0,0],["Chi bộ Trung tâm Dịch vụ tổng hợp",15,15,0,14,1,0,0],["Chi bộ Trung tâm GDNN - GDTX",19,19,0,18,1,0,0],["Chi bộ Trung tâm Phục vụ hành chính công",8,8,0,7,1,0,0],["Chi bộ VNPT Bảo Thắng",6,6,0,5,1,0,0],["Chi bộ thôn An Thắng",28,28,0,27,1,0,0],["Chi bộ thôn An Trà",27,27,0,26,1,0,0],["Chi bộ thôn Cánh Địa",33,33,0,33,0,0,0],["Chi bộ thôn Hải Niên",16,16,0,16,0,0,0],["Chi bộ thôn Khe Mụ",27,27,0,27,0,0,0],["Chi bộ thôn Khe Đền",13,13,0,13,0,0,0],["Chi bộ thôn Làng Chưng",21,21,0,21,0,0,0],["Chi bộ thôn Làng Giàng",30,30,0,30,0,0,0],["Chi bộ thôn Lượt",34,34,0,34,0,0,0],["Chi bộ thôn Mom Đào",19,19,0,19,0,0,0],["Chi bộ thôn Múc",28,28,0,10,18,0,0],["Chi bộ thôn Phú Long",58,58,0,31,27,0,0],["Chi bộ thôn Phú Thịnh",41,41,0,41,0,0,0],["Chi bộ thôn Phố Lu",127,127,0,115,11,0,0],["Chi bộ thôn Quyết Tâm",47,47,0,43,4,0,0],["Chi bộ thôn Sơn Hà",95,95,0,88,7,0,0],["Chi bộ thôn Sơn Hải",56,52,0,45,0,2,0],["Chi bộ thôn Thái Niên",18,18,0,18,0,0,0],["Chi bộ thôn Tân Thành",54,54,0,54,0,0,0],["Chi bộ thôn Đo Ngoài",29,29,0,25,4,0,0],["Chi bộ thôn Đồng Tâm",38,38,0,37,1,0,0],["Chi bộ Điện lực Bảo Thắng",21,21,0,19,2,0,0],["Đảng bộ Trung tâm Y tế khu vực Bảo Thắng",201,201,0,110,90,0,0],["Đảng bộ Trường THPT số 1",49,49,0,47,2,0,0],["Đảng bộ Trường Tiểu học Thái Niên",58,58,0,28,30,0,0]];
+const $=s=>document.querySelector(s);const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money=n=>Math.round(n).toLocaleString('vi-VN')+' ₫';const pc=x=>(x*100).toFixed(1).replace('.',',')+'%';
+const nkey=s=>String(s||'').toLocaleLowerCase('vi').replace(/[^\p{L}\p{N}]+/gu,'');
+const pnum=x=>{if(typeof x==='number')return isFinite(x)?x:0;const t=String(x==null?'':x).trim().replace('%','').replace(/\s/g,'');if(!t)return 0;if(/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(t))return Number(t.replace(/\./g,'').replace(',','.'))||0;if(/^-?\d+,\d+$/.test(t))return Number(t.replace(',','.'))||0;return Number(t)||0};
+function jsonp(url,ms){return new Promise((res,rej)=>{const cb='__bd_'+Date.now()+Math.random().toString(36).slice(2),sc=document.createElement('script');const fin=(e,v)=>{clearTimeout(tm);delete window[cb];sc.remove();e?rej(e):res(v)};const tm=setTimeout(()=>fin(new Error('timeout')),ms||12000);window[cb]=d=>fin(null,d);sc.onerror=()=>fin(new Error('load'));sc.src=url+(url.includes('?')?'&':'?')+'callback='+cb+'&t='+Date.now();document.head.appendChild(sc)})}
+/* đọc 1 tab tháng -> mảng đơn vị chuẩn hóa */
+function parseTab(d){if(!d||!d.ok||!Array.isArray(d.headers)||!Array.isArray(d.rows))return null;
+  let H=d.headers.map(h=>String(h).trim()),R=d.rows;
+  if(R.length&&R[0].some(c=>/\(1\)/.test(String(c)))){const sub=R[0];while(H.length<sub.length)H.push('');H=H.map((h,i)=>{const t=String(sub[i]==null?'':sub[i]).trim();return t||h});R=R.slice(1)}
+  const ix=k=>H.indexOf(KEYS[k]);if(ix('name')<0)return null;
+  const out=[];R.forEach(r=>{const stt=String(r[ix('stt')]==null?'':r[ix('stt')]).trim();const name=String(r[ix('name')]||'').trim();if(!name||(ix('stt')>=0&&!/^\d+$/.test(stt)))return;
+    const g=k=>ix(k)<0?0:pnum(r[ix(k)]);const m=g('members'),ex=g('exempt'),mv=g('moved'),due=Math.max(0,m-ex-mv),unf=g('unfiled');
+    out.push({n:name,m,d:due,p:g('paidCount'),nr:Math.max(0,unf-ex),pe:g('pending'),ap:g('approved'),mo:g('paid')})});
+  return out.length?out:null}
+const fromSnap=()=>SNAP.map(a=>({n:a[0],m:a[1],d:a[2],p:a[3],nr:a[4],pe:a[5],ap:a[6],mo:a[7]}));
+let U=[],stampTxt='',isLive=false,monthly={},viewM=0;
+const NOW=new Date(),CM=NOW.getMonth()+1,CY=NOW.getFullYear();
+const tabName=m=>'Thang'+m+(CY===2026?'':'-'+CY);
+function sumU(L){return L.reduce((a,u)=>{a.m+=u.m;a.d+=u.d;a.p+=u.p;a.nr+=u.nr;a.pe+=u.pe;a.ap+=u.ap;a.mo+=u.mo;return a},{m:0,d:0,p:0,nr:0,pe:0,ap:0,mo:0})}
+async function load(){
+  let got=null,gotM=0,stamp='';
+  for(let m=CM;m>=1&&!got;m--){try{const d=await jsonp(EP+'?action=read&tab='+encodeURIComponent(tabName(m)),10000);const L=parseTab(d);if(L&&sumU(L).d>0){got=L;gotM=m;if(d.lastSync){const t=new Date(d.lastSync);if(!isNaN(t))stamp=t.toLocaleString('vi-VN',{hour12:false,day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}}}catch(_){}
+    if(!got&&m===CM)continue}
+  if(got){U=got;isLive=true;viewM=gotM;stampTxt=stamp?('Cập nhật '+stamp):'Số liệu từ Google Sheet';monthly[gotM]=sumU(got).mo}
+  else{U=fromSnap();viewM=10;stampTxt='Số liệu dự phòng 21/10/2026';monthly[10]=sumU(U).mo}
+  render();
+  /* các tháng còn lại cho biểu đồ */
+  await Promise.all(Array.from({length:CM},(_,i)=>i+1).filter(m=>monthly[m]==null).map(async m=>{try{const d=await jsonp(EP+'?action=read&tab='+encodeURIComponent(tabName(m)),10000);const L=parseTab(d);if(L){const s=sumU(L);if(s.d>0)monthly[m]=s.mo}}catch(_){}}));
+  renderMonth();
+  try{const d=await jsonp(EP+'?action=read&tab='+encodeURIComponent('Lịch sử ngày'),15000);if(d&&d.ok&&Array.isArray(d.rows)){hist=d.rows;renderFc()}}catch(_){}
+}
+let hist=null;
+function render(){
+  const T=sumU(U),rate=T.d?T.p/T.d:0,done=U.filter(u=>u.d>0&&u.p>=u.d).length;
+  $('#stamp').textContent=stampTxt;$('#stamp').className='pill'+(isLive?'':' warn');
+  $('#kpis').innerHTML=`<div class="card kpi"><small>Đã thu</small><b>${money(T.mo)}</b><i>tháng ${viewM}/${CY}</i></div><div class="card kpi"><small>Đảng viên đã nộp</small><b>${T.p}/${T.d}</b><i>phải nộp (trừ miễn giảm)</i></div><div class="card kpi main"><small>Tỷ lệ hoàn thành</small><b>${pc(rate)}</b><i>đảng viên đã nộp</i></div><div class="card kpi ok"><small>Đơn vị hoàn thành</small><b>${done}/${U.filter(u=>u.m>0).length}</b><i>đơn vị đã có số liệu</i></div><div class="card kpi"><small>Cần xử lý</small><b>${U.filter(u=>u.d>0&&u.p<u.d).length}</b><i>đơn vị chưa hoàn thành</i></div>`;
+  const C=2*Math.PI*52;
+  $('#donut').innerHTML=`<svg viewBox="0 0 130 130" role="img" aria-label="Tỷ lệ ${pc(rate)}"><circle cx="65" cy="65" r="52" fill="none" stroke="#f0e2e2" stroke-width="14"/><circle cx="65" cy="65" r="52" fill="none" stroke="#b3141c" stroke-width="14" stroke-dasharray="${(C*rate).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 65 65)" stroke-linecap="round"/><text x="65" y="71" text-anchor="middle" font-size="22" font-weight="800" font-family="Georgia,serif">${pc(rate)}</text></svg>`;
+  $('#dSub').textContent=T.d+' đảng viên';
+  $('#leg').innerHTML=[['#2f7d4f','Đã nộp',T.p],['#c9a227','Đã duyệt, chưa nộp',T.ap],['#d97706','Chưa duyệt',T.pe],['#b3141c','Chưa có hồ sơ',T.nr]].map(([c,l,n])=>`<div><span><i style="background:${c}"></i>${l}</span><b>${n}</b></div>`).join('');
+  const late=U.filter(u=>u.d>0&&u.p<u.d).sort((a,b)=>(b.nr+b.pe+b.ap)-(a.nr+a.pe+a.ap));
+  $('#lSub').textContent=late.length+' đơn vị';
+  $('#rows').innerHTML=late.slice(0,10).map(u=>`<div class="row"><span title="${esc(u.n)}">${esc(u.n)}</span><small>${u.nr+u.pe+u.ap} thiếu</small><b>${pc(u.d?u.p/u.d:0)}</b></div>`).join('')||'<small>Tất cả đơn vị đã hoàn thành.</small>';
+  renderMonth();renderFc()}
+function renderMonth(){
+  const S=Array.from({length:12},(_,i)=>({m:i+1,v:monthly[i+1]!=null?monthly[i+1]:null}));
+  const mx=Math.max(1,...S.map(x=>x.v||0));
+  const el=$('#mchart');el.innerHTML=S.map(x=>`<div class="c${x.m===viewM?' sel':''}" title="Tháng ${x.m}: ${x.v!=null?money(x.v):'chưa có số liệu'}"><em>${x.v?(x.v>=1e6?(Math.round(x.v/1e5)/10).toLocaleString('vi-VN')+' tr':Math.round(x.v/1e3)+' k'):''}</em><i style="height:${x.v?Math.max(3,x.v/mx*118):3}px"></i></div>`).join('');
+  $('#mlab').innerHTML=S.map(x=>`<span class="${x.m===viewM?'sel':''}">T${x.m}</span>`).join('');
+  requestAnimationFrame(()=>{const H=el.clientHeight,pts=[];[...el.children].forEach((c,i)=>{if(c.tagName!=='DIV'||S[i].v==null)return;pts.push({x:c.offsetLeft+c.offsetWidth/2,y:H-Math.max(3,S[i].v/mx*118)-1})});
+    if(pts.length<2)return;let d='M'+pts[0].x+' '+pts[0].y;for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],m=(a.x+b.x)/2;d+=' C'+m+' '+a.y+' '+m+' '+b.y+' '+b.x+' '+b.y}
+    el.insertAdjacentHTML('beforeend',`<svg class="tr" viewBox="0 0 ${el.clientWidth} ${H}" aria-hidden="true"><path d="${d}"/>${pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="3.2"/>`).join('')}</svg>`)});
+  const cur=monthly[viewM],prevK=Object.keys(monthly).map(Number).filter(m=>m<viewM&&monthly[m]>0).sort((a,b)=>b-a)[0];
+  if(cur==null)$('#say').textContent='';else if(prevK&&monthly[prevK]>0){const d=(cur-monthly[prevK])/monthly[prevK]*100;$('#say').innerHTML=`Tháng ${viewM} thu <b>${money(cur)}</b>, <b class="${d>=0?'up':'dn'}">${d>=0?'tăng ':'giảm '}${Math.abs(d).toFixed(1).replace('.',',')}%</b> so với tháng ${prevK}.`}
+  else $('#say').innerHTML=`Tháng ${viewM} thu <b>${money(cur)}</b>; chưa có tháng trước để so sánh.`}
+function renderFc(){
+  const T=sumU(U),rate=T.d?T.p/T.d:0;
+  const days={};(hist||[]).forEach(r=>{const s=String(r[0]);const d=/^\d{4}-\d{2}-\d{2}$/.test(s)?s:null;if(d)days[d.slice(0,7)+'|'+d]=1});
+  const have=Object.keys(days).filter(k=>k.startsWith(CY+'-'+String(CM).padStart(2,'0'))).length;
+  $('#fbar').innerHTML=`<i style="width:${rate*100}%;background:#2f7d4f"></i>`;
+  $('#ftxt').textContent=have>=3?`Đã có ${have} ngày số liệu; dự báo chi tiết ở trang chính.`:`Hôm nay ${pc(rate)}. Chưa đủ số liệu hằng ngày để dự báo (cần bật ghi số liệu mỗi ngày trong Apps Script).`}
+load();
+</script></body></html>
