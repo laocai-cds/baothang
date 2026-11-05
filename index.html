@@ -701,6 +701,7 @@ html:not(.is-admin) .admin-only{display:none!important}
 .tabsum{margin-bottom:22px}.tabsum>.ph{margin-bottom:6px}
 .tsTabs{display:flex;gap:6px;border-bottom:2px solid var(--rule);margin:0 0 14px;overflow-x:auto;scrollbar-width:none}.tsTabs::-webkit-scrollbar{display:none}
 .tsTabs button{flex:none;border:0;background:none;padding:10px 18px;font:700 14px inherit;font-family:inherit;color:#667;border-radius:10px 10px 0 0;cursor:pointer;margin-bottom:-2px;border-bottom:3px solid transparent;white-space:nowrap}
+.tsTabs button[hidden]{display:none}.tabsum #monthPanel,.tabsum .tsPane>.fc{margin:0}.tabsum .tsPane>.fc{border:0;box-shadow:none;padding:0;background:none}.tabsum .tsPane>.fc>.ph{display:none}
 .tsTabs button:hover{color:var(--son)}.tsTabs button.on{color:var(--son);border-bottom-color:var(--son);background:rgba(179,20,28,.06)}
 .tsPane{display:none}.tsPane.on{display:block}
 .tabsum .tsPane>.panel,.tabsum .tomtat{border:0;box-shadow:none;padding:0;margin:0;background:none;border-radius:0}
@@ -841,13 +842,18 @@ go();document.addEventListener('DOMContentLoaded',go);
         <div class="legend" id="chartlegend" style="margin:16px 0 0"></div>
       </div>
     </div>
-    <div class="panel pad" id="monthPanel" style="margin-bottom:20px">
+    <div class="panel pad tabsum" id="tabMonth" style="margin-bottom:20px">
       <div class="ph"><h2>Thu đảng phí theo tháng</h2><small id="monthYear"></small></div>
+      <div class="tsTabs" role="tablist"><button type="button" class="on" data-p="a">Thu theo tháng</button><button type="button" data-p="b" id="tabFcBtn" hidden>Dự báo cuối tháng</button></div>
+      <div class="tsPane on" data-p="a">
+    <div id="monthPanel">
       <div class="mkpi" id="monthKpi"></div>
       <div class="mchart" id="monthChart" role="img" aria-label="Biểu đồ số tiền thu theo từng tháng"></div>
       <p class="mnote" id="monthNote"></p>
     </div>
-    <div class="panel pad fc" id="fcPanel" style="margin-bottom:20px" hidden>
+      </div>
+      <div class="tsPane" data-p="b">
+    <div class="panel pad fc" id="fcPanel" hidden>
       <div class="ph"><h2>Dự báo cuối tháng</h2><small id="fcSub"></small></div>
       <div class="mkpi" id="fcKpi"></div>
       <div class="fgrid" id="fcGrid">
@@ -855,6 +861,8 @@ go();document.addEventListener('DOMContentLoaded',go);
         <div class="admin-only"><h3 class="fh">Chi bộ có nguy cơ không kịp</h3><div class="frows" id="fcRows"></div><p class="mnote" id="fcCnt" style="margin-top:8px"></p></div>
       </div>
       <p class="mnote" id="fcNote"></p>
+    </div>
+      </div>
     </div>
     <div class="cols">
       <div class="panel pad">
@@ -2855,6 +2863,8 @@ const go=p=>{T.querySelectorAll(':scope>.tsTabs button').forEach(b=>b.classList.
 T.querySelectorAll(':scope>.tsTabs button').forEach(b=>b.onclick=()=>go(b.dataset.p));T._go=go});
 const S=document.getElementById('tabSum');if(!S)return;
 const hash=()=>{const h=location.hash;if(h==='#tien-trinh-ho-so'){S._go('b');S.scrollIntoView()}else if(h==='#thu-theo-tien'){S._go('c');S.scrollIntoView()}else if(h==='#tom-tat')S._go('a')};
-addEventListener('hashchange',hash);hash()})()</script>
+addEventListener('hashchange',hash);hash();
+const M=document.getElementById('tabMonth'),F=document.getElementById('fcPanel'),B=document.getElementById('tabFcBtn');
+if(M&&F&&B){const sync=()=>{B.hidden=F.hidden;if(F.hidden)M._go('a')};new MutationObserver(sync).observe(F,{attributes:true,attributeFilter:['hidden']});sync()}})()</script>
 </body>
 </html>
