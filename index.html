@@ -708,6 +708,12 @@ html:not(.is-admin) .admin-only{display:none!important}
 .tabsum .tsPane>.panel,.tabsum .tomtat{border:0;box-shadow:none;padding:0;margin:0;background:none;border-radius:0}
 .tabsum .tomtat{border-left:0}.tabsum .tsPane>.panel>.ph{display:none}.tabsum .tsPane>.tomtat>.ph{display:flex;justify-content:flex-end}.tabsum .tsPane>.tomtat>.ph h2{display:none}
 .tsSub{display:block;color:#667;font-size:12.5px;margin:0 0 12px}
+/* Chim Lạc (thử nghiệm) */
+.hero .wrap>div:first-child::before{right:16px;top:auto;bottom:14px;width:min(70%,420px);height:58%;opacity:.17;background:url("chim-lac.png") no-repeat right bottom/contain}
+@keyframes chimBay{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(-40px,-22px) rotate(-3deg)}50%{transform:translate(-80px,4px) rotate(1deg)}75%{transform:translate(-36px,22px) rotate(3.5deg)}100%{transform:translate(0,0) rotate(0)}}
+.hero .wrap>div:first-child::before{opacity:.24;transform-origin:60% 50%;animation:chimBay 5s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.hero .wrap>div:first-child::before{animation:none}}
+@media(max-width:700px){.hero .wrap>div:first-child::before{width:88%;height:48%;opacity:.22}}
 </style>
 </head>
 <script>(function(){
